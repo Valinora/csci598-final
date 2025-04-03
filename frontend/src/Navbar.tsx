@@ -1,10 +1,10 @@
 // import { createSignal } from "solid-js";
 
-interface NavbarProps {
+export interface NavbarProps {
     active: string
 }
 
-export function Navbar(props: NavbarProps) {
+export function Navbar() {
 
 
 
