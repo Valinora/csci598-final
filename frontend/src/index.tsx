@@ -5,4 +5,5 @@ import App from './App.tsx'
 
 const root = document.getElementById('root')
 
+// biome-ignore lint/style/noNonNullAssertion: Root must exist, no valid workaround.
 render(() => <App />, root!)
