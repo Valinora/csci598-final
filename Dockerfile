@@ -31,4 +31,4 @@ COPY --from=ghcr.io/astral-sh/uv:0.6 /uv /uvx /bin/
 EXPOSE 8000
 
 WORKDIR /opt/srv
-RUN uv run manage.py runserver 0.0.0.0:8000
+ENTRYPOINT [ "uv", "run", "manage.py", "runserver", "0.0.0.0:8000" ]
