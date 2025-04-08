@@ -3,14 +3,11 @@
 #####################################################
 FROM python:3.10-alpine AS djangobuild
 
-RUN mkdir /opt/srv
-WORKDIR /opt/srv
-
-COPY ./backend .
+COPY ./backend /opt/srv/
 COPY --from=ghcr.io/astral-sh/uv:0.6 /uv /uvx /bin/
 
+WORKDIR /opt/srv
 RUN uv sync
-
 
 #####################################################
 #                  BUN BUILD STAGE                  #
