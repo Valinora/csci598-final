@@ -13,7 +13,7 @@ RUN uv sync
 
 
 #####################################################
-#                 BUN BUILD STAGE                   #
+#                  BUN BUILD STAGE                  #
 #####################################################
 FROM oven/bun:slim AS bunbuild
 
@@ -22,9 +22,9 @@ COPY ./frontend /opt/build/
 WORKDIR /opt/build
 RUN bun run build
  
-# #####################################################
-# #                    FINAL STAGE                    #
-# #####################################################
+#####################################################
+#                    FINAL STAGE                    #
+#####################################################
 FROM python:3.10-alpine AS final
 
 COPY --from=djangobuild /opt/srv /opt/srv/
