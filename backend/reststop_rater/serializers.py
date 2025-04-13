@@ -13,3 +13,10 @@ class BathroomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bathroom
         fields = ['id', 'name', 'rating', 'address', 'latitude', 'longitude', 'created_at', 'reviews']
+
+class BathroomWithReviewsSerializer(serializers.ModelSerializer):
+    reviews = ReviewSerializer(many=True, source='review_set')
+
+    class Meta:
+        model = Bathroom
+        fields = ['id', 'name', 'created_at', 'updated_at', 'reviews']

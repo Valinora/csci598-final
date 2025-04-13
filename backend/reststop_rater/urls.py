@@ -1,9 +1,9 @@
 from django.urls import path
+
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView
 )
-from . import views
 from .views import (
     api_root,
     SignUpView,
@@ -11,7 +11,8 @@ from .views import (
     BathroomDetailView,
     ReviewListCreateView,
     AllReviewsView,
-    BathroomReviewListView
+    BathroomReviewListView,
+    SyncView
 )
 
 urlpatterns = [
@@ -29,4 +30,7 @@ urlpatterns = [
     # Reviews
     path('reviews/', AllReviewsView.as_view(), name='all-reviews'),
     path('bathrooms/<int:bathroom_id>/reviews/', BathroomReviewListView.as_view(), name='review-list-create'),
+
+    # All Data
+    path('sync/', SyncView.as_view(), name='sync-endpoint'),
 ]
