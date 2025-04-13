@@ -1,18 +1,20 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView
 )
 from .views import (
-    api_root,
     SignUpView,
     BathroomListCreateView,
     BathroomDetailView,
     ReviewListCreateView,
+    api_root,
     AllReviewsView,
     BathroomReviewListView,
-    SyncView
+    SyncView,
 )
 
 urlpatterns = [
@@ -33,4 +35,4 @@ urlpatterns = [
 
     # All Data
     path('sync/', SyncView.as_view(), name='sync-endpoint'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

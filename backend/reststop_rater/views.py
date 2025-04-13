@@ -1,6 +1,8 @@
 # Standard library imports
 from django.contrib.auth.models import User
 from django.utils.dateparse import parse_datetime
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 # Django REST Framework imports
 from rest_framework import status, permissions, generics
@@ -66,10 +68,15 @@ def api_root(request, format=None):
     })
 
 # ─── User Signup ────────────────────────────────────────────────────────────────
+'''@method_decorator(csrf_exempt, name='dispatch')
 class SignUpView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
+        print("Incoming signup request:")
+        print("User:", request.user)
+        print("Is authenticated?", request.user.is_authenticated)
+        print("Headers:", request.headers)
         username = request.data.get("username")
         password = request.data.get("password")
         if not username or not password:
@@ -78,7 +85,37 @@ class SignUpView(APIView):
             return Response({"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST)
         user = User.objects.create_user(username=username, password=password)
         return Response({"message": "User created"}, status=status.HTTP_201_CREATED)
+'''
+@method_decorator(csrf_exempt, name='dispatch')
+class SignUpView(APIView):
+    permission_classes = [AllowAny]
 
+    def options(self, request, *args, **kwargs):
+        response = Response(status=status.HTTP_200_OK)
+        response["Access-Control-Allow-Origin"] = "https://supreme-tribble-4j6wvqj676phqxxr-5173.app.github.dev"
+        response["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+        response["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        response["Access-Control-Allow-Credentials"] = "true"
+        return response
+
+    def post(self, request, *args, **kwargs):
+        print("Incoming signup request:")
+        print("User:", request.user)
+        print("Is authenticated?", request.user.is_authenticated)
+        print("Headers:", request.headers)
+    
+        username = request.data.get("username")
+        password = request.data.get("password")
+
+        if not username or not password:
+            return Response({"error": "Username and password are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if User.objects.filter(username=username).exists():
+            return Response({"error": "Username already exists."}, status=status.HTTP_400_BAD_REQUEST)
+
+        User.objects.create_user(username=username, password=password)
+        return Response({"message": "User created successfully!"}, status=status.HTTP_201_CREATED)
+    
 # ─── Bathroom Views ─────────────────────────────────────────────────────────────
 class BathroomListCreateView(generics.ListCreateAPIView):
     queryset = Bathroom.objects.all().order_by('-created_at')
