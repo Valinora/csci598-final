@@ -28,7 +28,11 @@ COPY --from=djangobuild /opt/srv /opt/srv/
 COPY --from=bunbuild /opt/build/dist /opt/srv/reststop_rater/static/
 COPY --from=ghcr.io/astral-sh/uv:0.6 /uv /uvx /bin/
 
+COPY ./backend/start.sh /opt/srv/start.sh
+RUN chmod +x /opt/srv/start.sh
+
 EXPOSE 8000
 
 WORKDIR /opt/srv
-CMD [ "uv", "run", "manage.py", "runserver", "0.0.0.0:8000" ]
+CMD [ "sh", "/opt/srv/start.sh" ]
+
