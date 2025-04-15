@@ -15,8 +15,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.http import HttpResponse
+from django.http import JsonResponse
+
+def cors_test_view(request):
+    return JsonResponse({"message": "CORS works!"})
+
+def home(request):
+    return HttpResponse("Welcome to Reststop Rater!")
 
 urlpatterns = [
+    path('', home),
+    path("api/cors-test/", cors_test_view),
     path('admin/', admin.site.urls),
-]
+    path('api/', include('reststop_rater.urls')),
+] 
