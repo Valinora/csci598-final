@@ -15,8 +15,8 @@ class BathroomSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'rating', 'address', 'latitude', 'longitude', 'created_at', 'reviews']
 
 class BathroomWithReviewsSerializer(serializers.ModelSerializer):
-    reviews = ReviewSerializer(many=True, source='review_set')
+    reviews = ReviewSerializer(many=True, read_only=True)
 
     class Meta:
         model = Bathroom
-        fields = ['id', 'name', 'created_at', 'updated_at', 'reviews']
+        fields = "__all__"
