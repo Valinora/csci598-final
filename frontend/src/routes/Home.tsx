@@ -1,10 +1,10 @@
 // import './App.css'
-import { Navbar } from './components/Navbar.tsx';
-import LoginSignup from "./components/LoginSignup.tsx";
-import CreateBathroom from "./components/CreateBathroom.tsx";
+import { Navbar } from '../components/Navbar.tsx';
+import LoginSignup from "../components/LoginSignup.tsx";
+import CreateBathroom from "../components/CreateBathroom.tsx";
 
 
-export function App() {
+export default function App() {
     return (
         <>
             <Navbar />
