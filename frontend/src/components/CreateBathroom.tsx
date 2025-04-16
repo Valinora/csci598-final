@@ -6,7 +6,7 @@ export default function CreateBathroom() {
   return (
     <div>
       <h2>Create Bathroom</h2>
-      <button onClick={handleCreate}>Submit Sample Bathroom</button>
+      <button type="button" onClick={handleCreate}>Submit Sample Bathroom</button>
       {success() && <p style={{ color: "green" }}>Success!</p>}
       {error() && <p style={{ color: "red" }}>{error()}</p>}
     </div>

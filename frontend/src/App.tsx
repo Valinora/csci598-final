@@ -1,10 +1,10 @@
 // import './App.css'
-import { Navbar } from './views/Navbar.tsx';
-import LoginSignup from "./views/LoginSignup.tsx";
-import CreateBathroom from "./views/CreateBathroom.tsx";
+import { Navbar } from './components/Navbar.tsx';
+import LoginSignup from "./components/LoginSignup.tsx";
+import CreateBathroom from "./components/CreateBathroom.tsx";
 
 
-function App() {
+export function App() {
     return (
         <>
             <Navbar />
@@ -16,5 +16,3 @@ function App() {
         </>
     );
 }
-
-export default App

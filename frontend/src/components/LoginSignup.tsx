@@ -21,8 +21,8 @@ export default function LoginSignup() {
         value={password()}
         onInput={(e) => setPassword(e.currentTarget.value)}
       /><br />
-      <button onClick={() => handleLogin(username(), password())}>Login</button>
-      <button onClick={() => handleSignup(username(), password())}>Signup</button>
+      <button type="button" onClick={() => handleLogin(username(), password())}>Login</button>
+      <button type="button" onClick={() => handleSignup(username(), password())}>Signup</button>
       <p>{message()}</p>
     </div>
   );
