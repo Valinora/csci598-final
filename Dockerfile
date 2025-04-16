@@ -17,6 +17,7 @@ FROM oven/bun:slim AS bunbuild
 COPY ./frontend /opt/build/
 
 WORKDIR /opt/build
+RUN bun install
 RUN bun run build
  
 #####################################################
