@@ -1,13 +1,14 @@
-// src/api/bathroom.ts
-export async function createBathroom(data: {
-    name: string;
-    address: string;
-    latitude: number;
-    longitude: number;
-  }) {
+export interface Bathroom {
+  name: string,
+  address: string,
+  latitude: number,
+  longitude: number,
+}
+
+export async function createBathroom(data: Bathroom) {
     const token = localStorage.getItem("access");
   
-    const response = await fetch(`/api/bathrooms/`, {
+    const response = await fetch('/api/bathrooms/', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
