@@ -1,7 +1,7 @@
 import { createSignal } from "solid-js";
 import { useAuth } from "../hooks/useAuth";
 
-export default function LoginSignup() {
+export function LoginSignup() {
   const [username, setUsername] = createSignal("");
   const [password, setPassword] = createSignal("");
   const { handleLogin, handleSignup, message } = useAuth();

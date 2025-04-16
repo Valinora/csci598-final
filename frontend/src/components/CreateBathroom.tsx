@@ -1,6 +1,6 @@
 import { useCreateBathroom } from "../hooks/useCreateBathroom";
 
-export default function CreateBathroom() {
+export function CreateBathroom() {
   const { handleCreate, success, error } = useCreateBathroom();
 
   return (
