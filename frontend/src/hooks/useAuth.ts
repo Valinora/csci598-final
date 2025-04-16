@@ -9,8 +9,10 @@ export function useAuth() {
     try {
       await signup(username, password);
       setMessage("Signup successful!");
-    } catch (err: any) {
-      setMessage(err.message || "Signup failed.");
+    } catch (err) {
+      if (err instanceof Error) {
+        setMessage(err.message || "Signup failed.");
+      }
     }
   };
 
@@ -20,8 +22,10 @@ export function useAuth() {
       localStorage.setItem("access", data.access);
       localStorage.setItem("refresh", data.refresh);
       setMessage("Login successful!");
-    } catch (err: any) {
-      setMessage(err.message || "Login failed.");
+    } catch (err) {
+      if (err instanceof Error) {
+        setMessage(err.message || "Login failed.");
+      }
     }
   };
 
