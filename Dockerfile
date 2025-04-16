@@ -25,7 +25,7 @@ RUN bun run build
 FROM python:3.10-alpine AS final
 
 COPY --from=djangobuild /opt/srv /opt/srv/
-COPY --from=bunbuild /opt/build/dist /opt/srv/reststop_rater/static/
+COPY --from=bunbuild /opt/build/dist/* /opt/srv/assets/
 COPY --from=ghcr.io/astral-sh/uv:0.6 /uv /uvx /bin/
 
 COPY ./backend/start.sh /opt/srv/start.sh
