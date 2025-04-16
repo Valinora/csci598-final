@@ -3,8 +3,8 @@ import { createSignal } from "solid-js";
 import { createBathroom } from "../api/bathroom";
 
 export function useCreateBathroom() {
-  const [error, setError] = createSignal<string | null>(null);
-  const [success, setSuccess] = createSignal<boolean>(false);
+  const [error, setError] = createSignal(null);
+  const [success, setSuccess] = createSignal(false);
 
   const handleCreate = async () => {
     try {
