@@ -1,8 +1,7 @@
 # Standard library imports
 from django.contrib.auth.models import User
 from django.utils.dateparse import parse_datetime
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
+from django.shortcuts import get_object_or_404
 
 # Django REST Framework imports
 from rest_framework import status, permissions, generics
@@ -14,11 +13,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 
 # Local app imports
 from .models import Bathroom, Review
-from .serializers import (
-    BathroomSerializer,
-    ReviewSerializer,
-    BathroomWithReviewsSerializer
-)
+from .serializers import BathroomSerializer, ReviewSerializer
 
 # ─── API Root ────────────────────────────────────────────────────────────────────
 # View at /api/ that shows all of the endpoints accessible from this root
@@ -56,7 +51,7 @@ def api_root(request, format=None):
             'description': 'List all reviews across all bathrooms (read-only)',
         },
         'reviews_for_bathroom': {
-            'example_url': reverse('review-list-create', kwargs={'bathroom_id': 1}, request=request, format=format),
+            'example_url': reverse('review-list-create', kwargs={'pk': 1}, request=request, format=format),
             'methods': ['GET', 'POST'],
             'description': 'List or create reviews for a specific bathroom, with bathroom_id number',
         },
@@ -68,93 +63,70 @@ def api_root(request, format=None):
     })
 
 # ─── User Signup ────────────────────────────────────────────────────────────────
-'''@method_decorator(csrf_exempt, name='dispatch')
 class SignUpView(APIView):
     permission_classes = [AllowAny]
-
-    def post(self, request):
-        print("Incoming signup request:")
-        print("User:", request.user)
-        print("Is authenticated?", request.user.is_authenticated)
-        print("Headers:", request.headers)
-        username = request.data.get("username")
-        password = request.data.get("password")
-        if not username or not password:
-            return Response({"error": "Username and password required"}, status=status.HTTP_400_BAD_REQUEST)
-        if User.objects.filter(username=username).exists():
-            return Response({"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST)
-        user = User.objects.create_user(username=username, password=password)
-        return Response({"message": "User created"}, status=status.HTTP_201_CREATED)
-'''
-@method_decorator(csrf_exempt, name='dispatch')
-class SignUpView(APIView):
-    permission_classes = [AllowAny]
-
-    def options(self, request, *args, **kwargs):
-        response = Response(status=status.HTTP_200_OK)
-        response["Access-Control-Allow-Origin"] = "https://supreme-tribble-4j6wvqj676phqxxr-5173.app.github.dev"
-        response["Access-Control-Allow-Methods"] = "POST, OPTIONS"
-        response["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-        response["Access-Control-Allow-Credentials"] = "true"
-        return response
 
     def post(self, request, *args, **kwargs):
-        print("Incoming signup request:")
-        print("User:", request.user)
-        print("Is authenticated?", request.user.is_authenticated)
-        print("Headers:", request.headers)
-    
         username = request.data.get("username")
         password = request.data.get("password")
+        email = request.data.get("email", "")  # Optional email field
 
+        # Check for missing fields
         if not username or not password:
             return Response({"error": "Username and password are required."}, status=status.HTTP_400_BAD_REQUEST)
 
         if User.objects.filter(username=username).exists():
             return Response({"error": "Username already exists."}, status=status.HTTP_400_BAD_REQUEST)
 
-        User.objects.create_user(username=username, password=password)
-        return Response({"message": "User created successfully!"}, status=status.HTTP_201_CREATED)
-    
-# ─── Bathroom Views ─────────────────────────────────────────────────────────────
-class BathroomListCreateView(generics.ListCreateAPIView):
-    queryset = Bathroom.objects.all().order_by('-created_at')
-    serializer_class = BathroomSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+        try:
+            # Create the user
+            user = User.objects.create_user(username=username, password=password, email=email)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-class BathroomDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Bathroom.objects.all()
-    serializer_class = BathroomSerializer
+        return Response({"message": "User created successfully!"}, status=status.HTTP_201_CREATED)
+
+# ─── Bathroom Views ─────────────────────────────────────────────────────────────
+# Helper class
+class BaseBathroomView:
     permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = BathroomSerializer
+    queryset = Bathroom.objects.all()
+
+class BathroomListCreateView(BaseBathroomView, generics.ListCreateAPIView):
+    pass
+
+class BathroomDetailView(BaseBathroomView, generics.RetrieveUpdateDestroyAPIView):
+    pass
 
 # ─── Review Views ───────────────────────────────────────────────────────────────
-# List or create reviews for a specific bathroom
-class BathroomReviewListView(generics.ListCreateAPIView):
-    serializer_class = ReviewSerializer
+class BaseReviewView:
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = ReviewSerializer
 
+# List or create reviews for a specific bathroom
+class BathroomReviewListView(BaseReviewView, generics.ListCreateAPIView):
     def get_queryset(self):
-        bathroom_id = self.kwargs['bathroom_id']
-        return Review.objects.filter(bathroom__id=bathroom_id)
+        return Review.objects.filter(bathroom_id=self.kwargs['pk'])
 
     def perform_create(self, serializer):
-        bathroom = Bathroom.objects.get(pk=self.kwargs['bathroom_id'])
-        serializer.save(user=self.request.user, bathroom=bathroom)
+        try:
+            bathroom = get_object_or_404(Bathroom, pk=self.kwargs['pk'])
+            serializer.save(user=self.request.user, bathroom=bathroom)
+        except Exception as e:
+            print(f"Error saving review: {e}")
+            raise e
 
 # Not currently in use: general review list endpoint (not tied to bathrooms)
-class ReviewListCreateView(generics.ListCreateAPIView):
+class ReviewListCreateView(BaseReviewView, generics.ListCreateAPIView):
     queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
 # Read-only endpoint for all reviews
-class AllReviewsView(generics.ListAPIView):
+class AllReviewsView(BaseReviewView, generics.ListAPIView):
     queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
-
 
 # ─── Sync Endpoint ──────────────────────────────────────────────────────────────
 # Combines bathrooms and associated reviews into one response (optionally filtered by updated_at timestamp)
@@ -164,9 +136,8 @@ class SyncView(APIView):
     def get(self, request):
         since = request.query_params.get('since')
         if since:
-            try:
-                since_dt = parse_datetime(since)
-            except ValueError:
+            since_dt = parse_datetime(since)
+            if since_dt is None:
                 return Response({'error': 'Invalid datetime format'}, status=400)
             bathrooms = Bathroom.objects.filter(updated_at__gte=since_dt)
             reviews = Review.objects.filter(updated_at__gte=since_dt)
@@ -175,6 +146,6 @@ class SyncView(APIView):
             reviews = Review.objects.all()
 
         return Response({
-            'bathrooms': BathroomWithReviewsSerializer(bathrooms, many=True).data,
+            'bathrooms': BathroomSerializer(bathrooms, many=True).data,
             'reviews': ReviewSerializer(reviews, many=True).data,
         })

@@ -10,8 +10,10 @@ class Bathroom(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-created_at']
 
-    def __str__(self):
+    def __str__(self ):
         return self.name
     
 class Review(models.Model):
@@ -21,6 +23,9 @@ class Review(models.Model):
     comment = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
 
     def __str__(self):
         return f'{self.user.username} review on {self.bathroom.name}'

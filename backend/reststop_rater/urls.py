@@ -1,6 +1,7 @@
-from django.urls import path
+from django.urls import path, re_path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -31,7 +32,7 @@ urlpatterns = [
 
     # Reviews
     path('reviews/', AllReviewsView.as_view(), name='all-reviews'),
-    path('bathrooms/<int:bathroom_id>/reviews/', BathroomReviewListView.as_view(), name='review-list-create'),
+    path('bathrooms/<int:pk>/reviews/', BathroomReviewListView.as_view(), name='review-list-create'),
 
     # All Data
     path('sync/', SyncView.as_view(), name='sync-endpoint'),

@@ -7,6 +7,11 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = ['id', 'user', 'rating', 'comment', 'created_at']
 
+    def validate_rating(self, value):
+        if value < 1 or value > 5:
+            raise serializers.ValidationError("Rating must be between 1 and 5.")
+        return value
+
 class BathroomSerializer(serializers.ModelSerializer):
     reviews = ReviewSerializer(many=True, read_only=True)
 
@@ -14,9 +19,9 @@ class BathroomSerializer(serializers.ModelSerializer):
         model = Bathroom
         fields = ['id', 'name', 'rating', 'address', 'latitude', 'longitude', 'created_at', 'reviews']
 
-class BathroomWithReviewsSerializer(serializers.ModelSerializer):
-    reviews = ReviewSerializer(many=True, read_only=True)
+    def __init__(self, *args, **kwargs):
+        exclude_reviews = kwargs.pop('exclude_reviews', False)
+        super().__init__(*args, **kwargs)
 
-    class Meta:
-        model = Bathroom
-        fields = "__all__"
+        if exclude_reviews:
+            self.fields.pop('reviews')
