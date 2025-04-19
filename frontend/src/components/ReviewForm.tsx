@@ -1,4 +1,4 @@
-// src/components/ReviewForm.tsx
+// /frontend/src/components/ReviewForm.tsx
 
 import { useReviewForm } from "../hooks/useReviewForm";
 

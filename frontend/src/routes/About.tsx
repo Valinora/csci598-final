@@ -1,4 +1,4 @@
-// src/routes/About.tsx
+// /frontend/src/routes/About.tsx
 
 import { Navbar } from "../components/Navbar.tsx";
 

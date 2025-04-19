@@ -18,6 +18,7 @@ COPY ./frontend /opt/build/
 
 WORKDIR /opt/build
 RUN bun install
+RUN bun add connect-history-api-fallback
 RUN bun run build
  
 #####################################################

@@ -1,4 +1,4 @@
-// src/hooks/useCreateBathroom.ts
+// /frontend/src/hooks/useCreateBathroom.ts
 
 import { createSignal } from "solid-js";
 import { createBathroom } from "../api/bathroom";

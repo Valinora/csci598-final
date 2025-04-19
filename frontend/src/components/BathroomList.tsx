@@ -1,4 +1,4 @@
-// src/components/BathroomList.tsx
+// /frontend/src/components/BathroomList.tsx
 
 import { useBathroomList } from "../hooks/useBathroomList";
 

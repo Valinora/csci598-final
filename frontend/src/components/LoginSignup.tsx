@@ -1,4 +1,4 @@
-// src/components/LoginSignup.tsx
+// /frontend/src/components/LoginSignup.tsx
 
 import { createSignal } from "solid-js";
 import { useAuth } from "../hooks/useAuth";

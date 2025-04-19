@@ -1,7 +1,7 @@
-# src/views/review.py
+# /backend/reststop_rater/views/review.py
+
 from rest_framework import generics, permissions
 from django.shortcuts import get_object_or_404
-
 from ..models.review import Review
 from ..serializers.review import ReviewSerializer
 from ..models.bathroom import Bathroom

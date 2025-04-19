@@ -1,6 +1,8 @@
-# src/serializers/review.py
+# /backend/reststop_rater/serializers/review.py
+
 from rest_framework import serializers
 from ..models.review import Review
+from django.db import IntegrityError
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,6 +11,8 @@ class ReviewSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'user', 'created_at']
 
     def create(self, validated_data):
-        # Automatically set the user
         validated_data['user'] = self.context['request'].user
-        return super().create(validated_data)
+        try:
+            return super().create(validated_data)
+        except IntegrityError:
+            raise serializers.ValidationError("You have already reviewed this bathroom.")

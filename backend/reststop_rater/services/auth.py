@@ -1,3 +1,5 @@
+# /backend/reststop_rater/services/auth.py
+
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 

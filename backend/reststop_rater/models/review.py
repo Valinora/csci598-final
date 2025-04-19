@@ -1,4 +1,5 @@
-# src/models/review.py
+# /backend/reststop_rater/models/review.py
+
 from django.db import models
 from django.contrib.auth.models import User
 from .bathroom import Bathroom
@@ -13,6 +14,19 @@ class Review(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        constraints = [
+        models.UniqueConstraint(fields=['user', 'bathroom'], name='unique_user_review')
+    ]
 
     def __str__(self):
         return f'{self.user.username} review on {self.bathroom.name}'
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.bathroom.update_rating()
+
+    def delete(self, *args, **kwargs):
+        bathroom = self.bathroom
+        super().delete(*args, **kwargs)
+        bathroom.update_rating()
+

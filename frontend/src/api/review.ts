@@ -1,4 +1,4 @@
-// src/api/review.ts
+// /frontend/src/api/review.ts
 
 export interface Review {
   bathroomId: number;

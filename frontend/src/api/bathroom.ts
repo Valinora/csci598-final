@@ -1,4 +1,4 @@
-// src/api/bathroom.ts
+// /frontend/src/api/bathroom.ts
 
 export interface Bathroom {
   name: string,
@@ -26,6 +26,7 @@ export async function createBathroom(data: Bathroom) {
 
   if (!response.ok) {
     const error = await response.json();
+    console.error("Failed to fetch bathrooms:", error);
     throw new Error(error?.detail || "Failed to create bathroom");
   }
 

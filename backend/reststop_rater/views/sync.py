@@ -1,8 +1,9 @@
+# /backend/reststop_rater/views/sync.py
+
 from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.utils.dateparse import parse_datetime
-
 from ..services.review import get_reviews
 from ..services.bathroom import get_bathrooms
 from ..serializers.review import ReviewSerializer

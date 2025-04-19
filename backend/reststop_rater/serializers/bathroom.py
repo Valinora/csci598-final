@@ -1,3 +1,5 @@
+# /backend/reststop_rater/serializers/bathroom.py
+
 from rest_framework import serializers
 from .review import ReviewSerializer
 from ..models.bathroom import Bathroom

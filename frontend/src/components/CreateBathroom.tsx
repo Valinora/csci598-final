@@ -1,4 +1,4 @@
-// src/components/createBathroom.tsx
+// /frontend/src/components/createBathroom.tsx
 
 import { useCreateBathroom } from "../hooks/useCreateBathroom";
 

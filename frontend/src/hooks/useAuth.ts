@@ -1,4 +1,4 @@
-// src/hooks/useAuth.ts
+// /frontend/src/hooks/useAuth.ts
 
 import { createSignal } from "solid-js";
 import { login, signup } from "../api/auth";
