@@ -1,4 +1,5 @@
 // src/hooks/useCreateBathroom.ts
+
 import { createSignal } from "solid-js";
 import { createBathroom } from "../api/bathroom";
 
@@ -13,6 +14,7 @@ export function useCreateBathroom() {
         address: "700 Main St, Metropolis",
         latitude: 38.8951,
         longitude: -77.0364,
+        rating: 4.0,
       });
       console.log("Created bathroom:", newBathroom);
       setSuccess(true);

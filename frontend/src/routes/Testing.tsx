@@ -1,4 +1,4 @@
-// src/components/TestPage.tsx
+// src/routes/Testing.tsx
 
 import { createSignal } from "solid-js";
 import { Navbar } from "../components/Navbar";

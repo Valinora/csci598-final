@@ -1,7 +1,8 @@
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.contrib import admin
-from .models import Bathroom, Review
+from .models.bathroom import Bathroom
+from .models.review import Review
 
 class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'date_joined')
