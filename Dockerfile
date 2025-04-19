@@ -18,7 +18,6 @@ COPY ./frontend /opt/build/
 
 WORKDIR /opt/build
 RUN bun install
-RUN bun add connect-history-api-fallback
 RUN bun run build
  
 #####################################################
@@ -27,7 +26,6 @@ RUN bun run build
 FROM python:3.13-alpine AS final
 
 COPY --from=djangobuild /opt/srv /opt/srv/
-
 COPY --from=bunbuild /opt/build/dist/assets/ /opt/frontend/dist/assets/
 COPY --from=bunbuild /opt/build/dist/index.html /opt/frontend/dist/
 COPY --from=ghcr.io/astral-sh/uv:0.6 /uv /uvx /bin/

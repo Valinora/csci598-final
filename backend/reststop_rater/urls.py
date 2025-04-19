@@ -23,7 +23,6 @@ urlpatterns = [
     path('bathrooms/<int:pk>/', BathroomDetailView.as_view(), name='bathroom-detail'),
     path("bathrooms/nearby/", NearbyBathroomsView.as_view(), name="nearby-bathrooms"),
 
-
     # Reviews
     path('bathrooms/<int:pk>/reviews/', BathroomReviewListView.as_view(), name='review-list-create'),
 

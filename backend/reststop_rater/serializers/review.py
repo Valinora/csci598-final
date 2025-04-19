@@ -1,8 +1,8 @@
 # /backend/reststop_rater/serializers/review.py
 
+from django.db import IntegrityError
 from rest_framework import serializers
 from ..models.review import Review
-from django.db import IntegrityError
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:

@@ -24,5 +24,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('reststop_rater.urls')),
     re_path(r'^(?!api/|api$).*', SPAView.as_view()),
-    #re_path(r'^(?!api/|api$).*', TemplateView.as_view(template_name="index.html")),
 ] 
