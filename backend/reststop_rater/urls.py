@@ -1,21 +1,14 @@
+# /backend/reststop_rater/urls.py
+
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView
-)
-from .views import (
-    SignUpView,
-    BathroomListCreateView,
-    BathroomDetailView,
-    ReviewListCreateView,
-    api_root,
-    AllReviewsView,
-    BathroomReviewListView,
-    SyncView,
-)
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from .views.auth import SignUpView
+from .views.bathroom import BathroomListCreateView, BathroomDetailView,  NearbyBathroomsView
+from .views.review import BathroomReviewListView
+from .views.sync import SyncView
+from .views.root import api_root
 
 urlpatterns = [
     path('', api_root, name='api-root'),
@@ -28,11 +21,11 @@ urlpatterns = [
     # Bathrooms
     path('bathrooms/', BathroomListCreateView.as_view(), name='bathroom-list-create'),
     path('bathrooms/<int:pk>/', BathroomDetailView.as_view(), name='bathroom-detail'),
+    path("bathrooms/nearby/", NearbyBathroomsView.as_view(), name="nearby-bathrooms"),
 
     # Reviews
-    path('reviews/', AllReviewsView.as_view(), name='all-reviews'),
-    path('bathrooms/<int:bathroom_id>/reviews/', BathroomReviewListView.as_view(), name='review-list-create'),
+    path('bathrooms/<int:pk>/reviews/', BathroomReviewListView.as_view(), name='review-list-create'),
 
-    # All Data
+    # Sync
     path('sync/', SyncView.as_view(), name='sync-endpoint'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,3 +1,5 @@
+// /frontend/src/components/createBathroom.tsx
+
 import { useCreateBathroom } from "../hooks/useCreateBathroom";
 
 export function CreateBathroom() {

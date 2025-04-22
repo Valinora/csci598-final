@@ -1,4 +1,5 @@
-// import { createSignal } from "solid-js";
+// /frontend/src/components/Navbar.tsx
+
 import { type routesLiteral, routes } from "../index.tsx";
 
 

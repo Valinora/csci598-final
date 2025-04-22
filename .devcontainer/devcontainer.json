@@ -1,30 +1,30 @@
 {
-    "name": "Python 3.12 & Django 4.2",
-    "image": "mcr.microsoft.com/devcontainers/python:3.12-bullseye",
-    "postCreateCommand": "pip install -r .devcontainer/requirements.txt",
-    "features": {
-      "docker-in-docker": "latest"
+  "name": "Python 3.12 & Django 4.2",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12-bullseye",
+  "postCreateCommand": "pip install -r .devcontainer/requirements.txt",
+  "features": {
+    "docker-in-docker": "latest"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+      ]
+    }
+  },
+  "onCreateCommand": {
+    "uv": "pip install uv",
+    "bun": "curl -fsSL https://bun.sh/install | bash"
+  },
+  "portsAttributes": {
+    "8000": {
+      "label": "Django App",
+      "onAutoForward": "openBrowser"
     },
-    "customizations": {
-      "vscode": {
-        "extensions": [
-          "ms-python.python",
-          "ms-python.vscode-pylance"
-        ]
-      }
-    },
-    "onCreateCommand": {
-      "uv": "pip install uv",
-      "bun": "curl -fsSL https://bun.sh/install | bash"
-    },
-    "portsAttributes": {
-      "8000": {
-        "label": "Django App",
-        "onAutoForward": "openBrowser"
-      },
-      "5173": {
-        "label": "Bun App",
-        "onAutoForward": "openBrowser"
-      }
+    "5173": {
+      "label": "Bun App",
+      "onAutoForward": "openBrowser"
     }
   }
+}

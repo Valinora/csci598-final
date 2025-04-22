@@ -14,3 +14,5 @@ You can then use `uv run` in place of `python` for any command. An example:
 ```bash
 $ uv run manage.py runserver
 ```
+
+## Superuser: admin: admin@csuchico.edu: admin

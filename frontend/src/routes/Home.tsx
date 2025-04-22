@@ -1,4 +1,5 @@
-// import './App.css'
+// /frontend/src/routes/Home.tsx
+
 import { Navbar } from '../components/Navbar.tsx';
 
 export default function App() {
