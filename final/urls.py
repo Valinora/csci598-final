@@ -11,12 +11,21 @@ def cors_test_view(request):
 
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, "index.html")
+
+
+def about(request):
+    return render(request, "about.html")
+
+def apitest(request):
+    return render(request, "apitest.html")
 
 
 urlpatterns = [
     path("api/cors-test/", cors_test_view),
     path("admin/", admin.site.urls),
     path("api/", include("reststop_rater.urls")),
-    path("", index)
+    path("", index),
+    path("about", about),
+    path("apitest", apitest)
 ]
