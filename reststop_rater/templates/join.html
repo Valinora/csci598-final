@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}
+- Join
+{% endblock title %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1>Join</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {% bootstrap_form join_form %}
+        <input type="submit" class="btn btn-primary" value="Join" />
+    </form>
+</div>
+{% endblock content %}
