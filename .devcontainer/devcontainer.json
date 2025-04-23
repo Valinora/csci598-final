@@ -14,8 +14,7 @@
     }
   },
   "onCreateCommand": {
-    "uv": "pip install uv",
-    "bun": "curl -fsSL https://bun.sh/install | bash"
+    "uv": "pip install uv"
   },
   "portsAttributes": {
     "8000": {
