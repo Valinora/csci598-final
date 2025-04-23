@@ -9,7 +9,7 @@ class UserJoin(View):
     template = "join.html"
     form_class = JoinForm
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         page_data = {"join_form": self.form_class}
         return render(request, self.template, page_data)
 
