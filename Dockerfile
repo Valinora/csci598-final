@@ -9,7 +9,6 @@ COPY --from=ghcr.io/astral-sh/uv:0.6 /uv /uvx /bin/
 COPY start.sh /opt/srv/start.sh
 
 WORKDIR /opt/srv
-RUN uv sync
 
 EXPOSE 8000
 
