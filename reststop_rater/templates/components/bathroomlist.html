@@ -1,0 +1,12 @@
+<ul>
+    {% for bathroom in bathrooms %}
+    <li>
+        <strong>{{ bathroom.name }}</strong><br />
+        Address: {{ bathroom.address }}<br />
+        Rating: {{ bathroom.rating }}<br />
+        Distance: {{ bathroom.distance_to }}<br />
+    </li>
+    {% empty %}
+    <li>No nearby bathrooms found.</li>
+    {% endfor %}
+</ul>
