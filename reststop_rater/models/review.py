@@ -3,7 +3,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from .bathroom import Bathroom
-from ..services.bathroom import update_bathroom_rating
 
 class Review(models.Model):
     bathroom = models.ForeignKey(Bathroom, on_delete=models.CASCADE, related_name='reviews')
@@ -21,3 +20,19 @@ class Review(models.Model):
 
     def __str__(self):
         return f'{self.user.username} review on {self.bathroom.name}'
+
+    def update_bathroom_rating_after_review_change(self):
+        self.bathroom.update_bathroom_rating()
+
+    def handle_review_creation_or_deletion(self, action='create'):
+        if action == 'create':
+            self.update_bathroom_rating_after_review_change()
+        elif action == 'delete':
+            self.update_bathroom_rating_after_review_change()
+
+    @classmethod
+    def get_reviews(cls, updated_since=None):
+        qs = Review.objects.select_related('user', 'bathroom')
+        if updated_since:
+            qs = qs.filter(updated_at__gte=updated_since)
+        return qs
