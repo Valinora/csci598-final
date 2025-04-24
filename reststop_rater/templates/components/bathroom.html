@@ -1,7 +1,12 @@
-
-    <li>
-        <strong>{{ bathroom.name }}</strong><br />
-        Address: {{ bathroom.address }}<br />
-        Rating: {{ bathroom.rating }}<br />
-        Distance: {{ bathroom.distance_to }}<br />
-    </li>
+<li class="card">
+    <a href="/bathrooms/{{bathroom.id}}">
+    <strong class="card-title">{{ bathroom.name }}</strong><br />
+    <div class="card-text">
+        <p>
+            Address: {{ bathroom.address }}<br />
+            Rating: {{ bathroom.rating }}<br />
+            Distance: {{ bathroom.distance_to }}<br />
+        </p>
+    </div>
+    </a>
+</li>
