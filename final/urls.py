@@ -5,28 +5,23 @@ from django.shortcuts import render
 from django.urls import path, include
 from django.http import JsonResponse
 
-from reststop_rater.views.login import UserJoin, UserLogin
-from reststop_rater.views.apitest import ApiTest
+from reststop_rater.views.login import UserJoin, UserLogin, user_logout
+from reststop_rater.views.home import HomePage
+from reststop_rater.views.bathrooms import CreateBathroom, BathroomDetailView
 
 
 def cors_test_view(request):
     return JsonResponse({"message": "CORS works!"})
 
 
-def index(request):
-    return render(request, "index.html")
-
-
-def about(request):
-    return render(request, "about.html")
-
 urlpatterns = [
     path("api/cors-test/", cors_test_view),
     path("admin/", admin.site.urls),
     path("api/", include("reststop_rater.urls")),
     path("login/", UserLogin.as_view()),
+    path("logout/", user_logout),
     path("join/", UserJoin.as_view()),
-    path("", index),
-    path("about", about),
-    path("apitest", ApiTest.as_view())
+    path("", HomePage.as_view()),
+    path("create/", CreateBathroom.as_view()),
+    path("bathrooms/<int:bathroom_id>/", BathroomDetailView.as_view()),
 ]

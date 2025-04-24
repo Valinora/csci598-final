@@ -18,5 +18,9 @@ class Bathroom(models.Model):
         return self.name
     
     def distance_to(self, lat2, lon2):
-        from ..services.bathroom import calculate_distance
-        return calculate_distance(self.latitude, self.longitude, lat2, lon2)
+        from ..services.bathroom import BathroomService
+        return BathroomService.calculate_distance(self.latitude, self.longitude, lat2, lon2)
+
+    @classmethod
+    def create_bathroom(cls, name, address, lat, long):
+        cls(name=name, address=address, latitude=lat, longitude=long).save()

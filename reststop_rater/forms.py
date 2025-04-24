@@ -4,12 +4,15 @@ from django.contrib.auth.models import User
 from .models.bathroom import Bathroom
 from .models.review import Review
 
+
 class JoinForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
     email = forms.EmailField(widget=forms.EmailInput())
-    class Meta():
+
+    class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username', 'email', 'password')
+        fields = ("username", "email", "password")
+
 
 class LoginForm(forms.Form):
     username = forms.CharField()
@@ -17,12 +20,12 @@ class LoginForm(forms.Form):
 
 
 class CreateBathroomForm(forms.ModelForm):
-
-    class Meta():
+    class Meta:
         model = Bathroom
-        exclude = ()
+        exclude = ("rating",)
+
 
 class ReviewForm(forms.ModelForm):
-    class Meta():
+    class Meta:
         model = Review
-        exclude = ()
+        exclude = ("user","bathroom",)

@@ -1,5 +1,8 @@
 #!/bin/sh
 
+echo "Updating packages..."
+uv sync --frozen
+
 echo "Applying database migrations..."
 uv run manage.py makemigrations
 uv run manage.py migrate

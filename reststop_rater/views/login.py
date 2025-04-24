@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.views import View
 
 from ..forms import LoginForm, JoinForm
@@ -50,3 +51,9 @@ class UserLogin(View):
                 return redirect(request.POST.get("next", "/"))
 
         return render(request, self.template, {"login_form": form})
+
+
+@login_required(login_url="/login/")
+def user_logout(request):
+    logout(request)
+    return redirect("/")
