@@ -36,15 +36,10 @@ class CreateBathroom(LoginRequiredMixin, View):
         return render(request, self.template, data)
 
 
+class BathroomDetailView(View):
+    template = "bathroom.html"
+    review_form = ReviewForm
+    
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template, {"review_form": self.review_form})
 
-class ReviewBathroom(LoginRequiredMixin, View):
-    login_url = "/login/"
-    template = "reviewbathroom.html"
-    form = ReviewForm
-
-    def get(self, request):
-        return render(
-            request,
-            self.template,
-            {"review_form": self.form},
-        )

@@ -7,7 +7,7 @@ from django.http import JsonResponse
 
 from reststop_rater.views.login import UserJoin, UserLogin, user_logout
 from reststop_rater.views.home import HomePage
-from reststop_rater.views.apitest import CreateBathroom, ReviewBathroom
+from reststop_rater.views.bathrooms import CreateBathroom, BathroomDetailView
 
 
 def cors_test_view(request):
@@ -23,5 +23,5 @@ urlpatterns = [
     path("join/", UserJoin.as_view()),
     path("", HomePage.as_view()),
     path("create/", CreateBathroom.as_view()),
-    path("review/", ReviewBathroom.as_view()),
+    path("bathrooms/<int:pk>/", BathroomDetailView.as_view()),
 ]
