@@ -4,13 +4,11 @@
             <li class="nav-item">
                 <a href="/" class="nav-link text-light">Home</a>
             </li>
-            </li>
-            <li class="nav-item">
-                <a href="/about" class="nav-link text-light">About</a>
-            </li>
+            {% if user.is_authenticated %}
             <li class="nav-item">
                 <a href="/apitest" class="nav-link text-light">API Test</a>
             </li>
+            {% endif %}
         </ul>
         <ul class="navbar-nav ms-auto">
             {% if user.is_authenticated %}
