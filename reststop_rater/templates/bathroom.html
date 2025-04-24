@@ -1,11 +1,14 @@
 {% extends "base_generic.html" %}
 
 {% block title %}
- - {{bathroom.name}}
+ - {{ bathroom.name }}
 {% endblock title %}
 
 
 {% block content %}
+
+<h1>{{bathroom.name}}</h1>
+<p>{{bathroom.rating}}</h1>
 
 {% include "components/reviewform.html" %}
 

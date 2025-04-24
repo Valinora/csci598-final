@@ -23,5 +23,5 @@ urlpatterns = [
     path("join/", UserJoin.as_view()),
     path("", HomePage.as_view()),
     path("create/", CreateBathroom.as_view()),
-    path("bathrooms/<int:pk>/", BathroomDetailView.as_view()),
+    path("bathrooms/<int:bathroom_id>/", BathroomDetailView.as_view()),
 ]

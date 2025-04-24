@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 
@@ -41,5 +41,8 @@ class BathroomDetailView(View):
     review_form = ReviewForm
     
     def get(self, request, *args, **kwargs):
-        return render(request, self.template, {"review_form": self.review_form})
+        id = kwargs["bathroom_id"]
+        bathroom = get_object_or_404(Bathroom, id=id)
+
+        return render(request, self.template, {"review_form": self.review_form, "bathroom": bathroom})
 
