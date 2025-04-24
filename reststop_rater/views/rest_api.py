@@ -8,6 +8,8 @@ from django.shortcuts import get_object_or_404
 from django.utils.dateparse import parse_datetime
 
 from ..services.auth import create_user
+from ..services.review import get_reviews
+from ..services.bathroom import get_bathrooms, get_nearby_bathrooms
 from ..models.review import Review
 from ..models.bathroom import Bathroom
 from ..serializers.review import ReviewSerializer
@@ -116,7 +118,7 @@ class NearbyBathroomsView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        bathrooms = Bathroom.get_nearby_bathrooms(lat, lng, radius_km)
+        bathrooms = get_nearby_bathrooms(lat, lng, radius_km)
         response = [
             BathroomViewModel.from_model(b, b.distance_to(lat, lng)).__dict__
             for b in bathrooms
@@ -148,8 +150,8 @@ class SyncView(APIView):
             if "since" in request.query_params
             else None
         )
-        bathrooms = Bathroom.get_bathrooms(since)
-        reviews = Review.get_reviews(since)
+        bathrooms = get_bathrooms(since)
+        reviews = get_reviews(since)
 
         return Response(
             {
