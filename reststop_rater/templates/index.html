@@ -4,5 +4,11 @@
 <h1>Bathroom Review App</h1>
 
 <h2>Nearby Bathrooms</h2>
-{% include "components/bathroomlist.html" %}
+<ul>
+    {% for bathroom in bathrooms %}
+        {% include "components/bathroom.html" %}
+    {% empty %}
+    <li>No nearby bathrooms found.</li>
+    {% endfor %}
+</ul>
 {% endblock content %}
