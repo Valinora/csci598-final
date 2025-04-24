@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.views import View
 
-from ..models.bathroom import Bathroom
+from ..services.bathroom import get_nearby_bathrooms
 
 
 class HomePage(View):
     template = "index.html"
 
     def get(self, request):
-        bathrooms = Bathroom.get_nearby_bathrooms(5, 5) # TODO: Figure out how to get this from the user and then update the results
+        bathrooms = get_nearby_bathrooms(5, 5) # TODO: Figure out how to get this from the user and then update the results
         return render(request, self.template, {"bathrooms": bathrooms})
