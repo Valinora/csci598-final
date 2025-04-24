@@ -22,7 +22,7 @@ class LoginForm(forms.Form):
 class CreateBathroomForm(forms.ModelForm):
     class Meta:
         model = Bathroom
-        exclude = ()
+        exclude = ('rating',)
 
 
 class ReviewForm(forms.ModelForm):
