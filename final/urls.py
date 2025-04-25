@@ -8,15 +8,11 @@ from django.http import JsonResponse
 from reststop_rater.views.login import UserJoin, UserLogin, user_logout
 from reststop_rater.views.home import HomePage
 from reststop_rater.views.bathrooms import CreateBathroom, BathroomDetailView
-from reststop_rater.services.gmapsapi import get_nearby_facilities
+from reststop_rater.views.nearby import NearbyBathrooms
 
 
 def cors_test_view(request):
     return JsonResponse({"message": "CORS works!"})
-
-def gmaps_testing(request):
-    print(get_nearby_facilities(39.7278, -121.8451))
-    return render(request, "gmapstest.html")
 
 
 urlpatterns = [
@@ -29,5 +25,5 @@ urlpatterns = [
     path("", HomePage.as_view()),
     path("create/", CreateBathroom.as_view()),
     path("bathrooms/<int:bathroom_id>/", BathroomDetailView.as_view()),
-    path("map/", gmaps_testing)
+    path("nearby", NearbyBathrooms.as_view()),
 ]
