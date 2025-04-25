@@ -22,7 +22,16 @@ class UserJoin(View):
             user.set_password(user.password)
             user.save()
 
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(username=username, password=password)
+
+            if user and user.is_active:
+                login(request, user)
+
             return redirect("/")
+            
+        return render(request, self.template, {"join_form": form})
 
 
 class UserLogin(View):
