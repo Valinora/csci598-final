@@ -10,4 +10,5 @@ dependencies = [
     "djangorestframework",
     "djangorestframework-simplejwt",
     "django-cors-headers",
+    "requests>=2.32.3",
 ]
