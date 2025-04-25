@@ -28,7 +28,8 @@ class CreateBathroom(LoginRequiredMixin, View):
             lat = form.cleaned_data["latitude"]
             long = form.cleaned_data["longitude"]
 
-            Bathroom.create_bathroom(name, address, lat, long)
+            new_bathroom = Bathroom.create_bathroom(name, address, lat, long)
+            return redirect(f"/bathrooms/{new_bathroom.pk}")
 
         else:
             data["bathroom_form"] = form # is_valid call adds validation errors for display.

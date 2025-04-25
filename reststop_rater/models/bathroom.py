@@ -23,4 +23,6 @@ class Bathroom(models.Model):
 
     @classmethod
     def create_bathroom(cls, name, address, lat, long):
-        cls(name=name, address=address, latitude=lat, longitude=long).save()
+        ret = cls(name=name, address=address, latitude=lat, longitude=long)
+        ret.save()
+        return ret
