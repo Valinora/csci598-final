@@ -6,13 +6,15 @@ from django.urls import path, include
 from django.http import JsonResponse
 
 from reststop_rater.views.login import UserJoin, UserLogin, user_logout
-from reststop_rater.views.home import HomePage
 from reststop_rater.views.bathrooms import CreateBathroom, BathroomDetailView
 from reststop_rater.views.nearby import NearbyBathrooms
 
 
 def cors_test_view(request):
     return JsonResponse({"message": "CORS works!"})
+
+def home(request):
+    return render(request, "home.html")
 
 
 urlpatterns = [
@@ -22,7 +24,7 @@ urlpatterns = [
     path("login/", UserLogin.as_view()),
     path("logout/", user_logout),
     path("join/", UserJoin.as_view()),
-    path("", HomePage.as_view()),
+    path("", home),
     path("create/", CreateBathroom.as_view()),
     path("bathrooms/<int:bathroom_id>/", BathroomDetailView.as_view()),
     path("nearby", NearbyBathrooms.as_view()),
