@@ -8,7 +8,7 @@
     {% for bathroom in bathrooms %}
         {% include "components/bathroom.html" %}
     {% empty %}
-    <li>No nearby bathrooms found.</li>
+    <p>No nearby bathrooms found.<p>
     {% endfor %}
 </ul>
 {% endblock content %}
