@@ -10,6 +10,7 @@ class Bathroom(models.Model):
     longitude = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    gmaps_id = models.CharField(max_length=50, null=True)
 
     class Meta:
         ordering = ['-created_at']
@@ -23,4 +24,6 @@ class Bathroom(models.Model):
 
     @classmethod
     def create_bathroom(cls, name, address, lat, long):
-        cls(name=name, address=address, latitude=lat, longitude=long).save()
+        ret = cls(name=name, address=address, latitude=lat, longitude=long)
+        ret.save()
+        return ret

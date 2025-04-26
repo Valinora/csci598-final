@@ -1,5 +1,9 @@
 #!/bin/sh
 
+set -a
+source ./.env
+set +a
+
 echo "Updating packages..."
 uv sync --frozen
 

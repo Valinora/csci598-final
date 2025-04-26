@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+<h1>Bathroom Review App</h1>
+<p>Hello and welcome to the Reststop Rater! Please grant permission to find your location.</p>
+
+<div id="coords" style="text-align: center; margin-top: 20px;">
+    <button id="location-btn" class="btn btn-primary" type="button" disabled="true">
+        <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Finding location...
+      </button>
+</div>
+
+<script src="{% static "maps.js" %}"></script>
+{% endblock content %}
