@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Bathroom Details</h1>
+
+    <div class="bathroom-details">
+        <h2>{{ bathroom.name }}</h2>
+        <p><strong>Address:</strong> {{ bathroom.address }}</p>
+        <p><strong>Latitude:</strong> {{ bathroom.latitude }}</p>
+        <p><strong>Longitude:</strong> {{ bathroom.longitude }}</p>
+    </div>
+
+{% endblock content %}
