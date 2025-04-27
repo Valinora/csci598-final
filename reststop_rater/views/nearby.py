@@ -22,7 +22,7 @@ class NearbyBathrooms(View):
             return render(request, self.template, page_data)
 
         bathrooms = []
-        for place_raw in places_raw["places"]:
+        for place_raw in places_raw.get("places", []):
             bathroom = {
                 "gmaps_id": place_raw["id"],
                 "address": place_raw["formattedAddress"],
