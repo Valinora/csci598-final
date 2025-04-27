@@ -1,11 +1,11 @@
 <li class="card">
-    <a href="/bathrooms/{{bathroom.id}}">
-    <strong class="card-title">{{ bathroom.name }}</strong><br />
+    <a href="/bathrooms/{{bathroom.bathroom.id}}">
+    <strong class="card-title">{{ bathroom.bathroom.name }}</strong><br />
     <div class="card-text">
         <p>
-            Address: {{ bathroom.address }}<br />
-            Rating: {{ bathroom.rating }}<br />
-            Distance: {{ bathroom.distance }} mi.<br />
+            Address: {{ bathroom.bathroom.address }}<br />
+            Rating: {{ bathroom.bathroom.rating }}<br />
+            Distance: {{ bathroom.distance }} km<br />
         </p>
     </div>
     </a>

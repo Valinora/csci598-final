@@ -1,8 +1,0 @@
-{% load django_bootstrap5 %}
-
-<h1>Create Bathroom</h1>
-<form method="POST">
-    {% csrf_token %}
-    {% bootstrap_form bathroom_form %}
-    <input type="submit" class="btn btn-primary" value="Create" />
-</form>

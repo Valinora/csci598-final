@@ -1,49 +1,70 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 
-from ..forms import CreateBathroomForm, ReviewForm
+from ..forms import ReviewForm
 from ..models.bathroom import Bathroom
+from ..services.review import update_bathroom_rating_after_review_change
 
+class BathroomDetail(View):
+    template = "bathroomdetail.html"
 
-class CreateBathroom(LoginRequiredMixin, View):
-    login_url = "/login/"
-    template = "createbathroom.html"
-    form = CreateBathroomForm
+    def get(self, request, id):
+        bathroom = get_object_or_404(Bathroom, id=id)
+        reviews = bathroom.reviews.all()
+        form = ReviewForm()
 
-    def get(self, request):
-        return render(
-            request,
-            self.template,
-            {"bathroom_form": self.form},
-        )
+        context = {
+            'bathroom': bathroom,
+            'reviews': reviews,
+            'form': form,
+        }
 
-    def post(self, request):
-        form = self.form(request.POST)
-        data = {"bathroom_form": self.form}
+        if not request.user.is_authenticated:
+            context['login_redirect_url'] = request.get_full_path()
 
-        if form.is_valid():
-            name = form.cleaned_data["name"]
-            address = form.cleaned_data["address"]
-            lat = form.cleaned_data["latitude"]
-            long = form.cleaned_data["longitude"]
+        return render(request, self.template, context)
 
-            new_bathroom = Bathroom.create_bathroom(name, address, lat, long)
-            return redirect(f"/bathrooms/{new_bathroom.pk}")
-
-        else:
-            data["bathroom_form"] = form # is_valid call adds validation errors for display.
-        
-        return render(request, self.template, data)
-
-
-class BathroomDetailView(View):
-    template = "bathroom.html"
-    review_form = ReviewForm
-    
-    def get(self, request, *args, **kwargs):
-        id = kwargs["bathroom_id"]
+    def post(self, request, id):
         bathroom = get_object_or_404(Bathroom, id=id)
 
-        return render(request, self.template, {"review_form": self.review_form, "bathroom": bathroom})
+        if not request.user.is_authenticated:
+            return redirect(f'/login/?next={request.path}')
 
+        form = ReviewForm(request.POST)
+
+        if all(key in request.POST for key in ['name', 'address', 'lat', 'long']):
+            bathroom.name = request.POST.get("name")
+            bathroom.address = request.POST.get("address")
+            bathroom.latitude = request.POST.get("lat")
+            bathroom.longitude = request.POST.get("long")
+            bathroom.save()
+            
+            print("Updated Bathroom:", bathroom)
+            return redirect("bathroom_detail", id=id)
+        
+        elif form.is_valid():
+            existing_review = bathroom.reviews.filter(user=request.user).first()
+
+            if existing_review:
+                existing_review.rating = form.cleaned_data["rating"]
+                existing_review.comment = form.cleaned_data["comment"]
+                existing_review.save()
+                updated_review = existing_review
+
+            else:
+                new_review = form.save(commit=False)
+                new_review.user = request.user
+                new_review.bathroom = bathroom
+                new_review.save()
+                updated_review = new_review
+
+
+            update_bathroom_rating_after_review_change(updated_review)
+            return redirect("bathroom_detail", id=id)
+        
+        reviews = bathroom.reviews.all()
+        return render(request, self.template, {
+            "bathroom": bathroom,
+            "reviews": reviews,
+            "form": form,
+        })
