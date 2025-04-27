@@ -3,7 +3,7 @@ import json
 import os
 
 
-def get_nearby_facilities(lat, long, radius=1000, max_results=10):
+def get_nearby_facilities(lat, long, radius=50000, max_results=10):
     url = "https://places.googleapis.com/v1/places:searchNearby"
     body = {
         "included_types": ["public_bathroom", "gas_station", "rest_stop"],
