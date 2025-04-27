@@ -1,0 +1,19 @@
+{% block review_content %}
+    <h2>Reviews</h2>
+    {% if reviews %}
+        <ul>
+            {% for review in reviews %}
+                <li>
+                    <strong>{{ review.user.username }}</strong> rated it {{ review.rating }}/5
+                    <br />
+                    "{{ review.comment }}"
+                    <br />
+                    <small>Posted on {{ review.created_at|date:"F j, Y" }}</small>
+                </li>
+                <hr />
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No reviews yet. Be the first to leave one!</p>
+    {% endif %}
+{% endblock review_content %}
