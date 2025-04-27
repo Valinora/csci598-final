@@ -6,7 +6,7 @@ from django.urls import path, include
 from django.http import JsonResponse
 
 from reststop_rater.views.login import UserJoin, UserLogin, user_logout
-from reststop_rater.views.bathrooms import CreateBathroom, BathroomDetailView
+from reststop_rater.views.bathrooms import BathroomDetail
 from reststop_rater.views.nearby import NearbyBathrooms
 
 
@@ -25,7 +25,6 @@ urlpatterns = [
     path("logout/", user_logout),
     path("join/", UserJoin.as_view()),
     path("", home),
-    path("create/", CreateBathroom.as_view()),
-    path("bathrooms/<int:bathroom_id>/", BathroomDetailView.as_view()),
+    path("bathrooms/<int:id>/", BathroomDetail.as_view()),
     path("nearby", NearbyBathrooms.as_view()),
 ]
