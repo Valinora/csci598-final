@@ -2,22 +2,22 @@
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a href="/" class="nav-link text-light">Home</a>
+                <a href="/" class="nav-link text-light">Find Bathrooms</a>
             </li>
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-                <a href="/create" class="nav-link text-light">Create Bathroom</a>
+            {% if request.COOKIES.lat and request.COOKIES.long %}
+            <li class="nav-item mr-auto">
+                <a class="nav-link text-light" href="/nearby/?lat={{ request.COOKIES.lat|urlencode }}&long={{ request.COOKIES.long|urlencode }}&next={{ request.get_full_path|urlencode }}">Nearby Bathrooms</a>
             </li>
             {% endif %}
         </ul>
         <ul class="navbar-nav ms-auto">
             {% if user.is_authenticated %}
             <li class="nav-item mr-auto">
-                <a class="nav-link text-light" href="/logout/">Logout ({{user.username}})</a>
+                <a class="nav-link text-light" href="/logout/?next={{ request.get_full_path|urlencode }}">Logout ({{user.username}})</a>
             </li>
             {% else %}
             <li class="nav-item mr-auto">
-                <a class="nav-link text-light" href="/login/">Login</a>
+                <a class="nav-link text-light" href="/login/?next={{ request.get_full_path|urlencode }}">Login</a>
             </li>
             {% endif %}
         </ul>

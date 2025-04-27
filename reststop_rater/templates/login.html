@@ -11,10 +11,10 @@
     <form action="/login/" method="POST">
         {% csrf_token %}
         {% bootstrap_form login_form %}
+        <input type="hidden" name="next" value="{{ next }}">
         <input type="submit" class="btn btn-primary" value="Login" />
         <br />
-        Click <a href="/join">here</a> to join.
-        <input type="hidden" name="next" value="{{next}}">
+        <p>Click <a href="/join/?next={{ next|urlencode }}">here</a> to join.</p>
     </form>
 </div>
 {% endblock content %}

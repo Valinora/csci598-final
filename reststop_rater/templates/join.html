@@ -11,6 +11,7 @@
     <form method="POST">
         {% csrf_token %}
         {% bootstrap_form join_form %}
+        <input type="hidden" name="next" value="{{ next }}">
         <input type="submit" class="btn btn-primary" value="Join" />
     </form>
 </div>
