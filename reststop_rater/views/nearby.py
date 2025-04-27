@@ -3,6 +3,8 @@ from django.views import View
 
 from ..services.bathroom import get_nearby_bathrooms, BathroomService
 from ..services.gmapsapi import get_nearby_facilities
+from ..models.bathroom import Bathroom
+
 
 
 class NearbyBathrooms(View):
@@ -23,22 +25,25 @@ class NearbyBathrooms(View):
 
         bathrooms = []
         for place_raw in places_raw.get("places", []):
-            bathroom = {
-                "gmaps_id": place_raw["id"],
-                "address": place_raw["formattedAddress"],
-                "lat": float(place_raw["location"]["latitude"]),
-                "long": float(place_raw["location"]["longitude"]),
-                "name": place_raw["displayName"]["text"],
-            }
+            gmaps_id = place_raw["id"]
+            address = place_raw["formattedAddress"]
+            lat = float(place_raw["location"]["latitude"])
+            long = float(place_raw["location"]["longitude"])
+            name = place_raw["displayName"]["text"]
+            distance = round(BathroomService.calculate_distance(lat, long, lat, long), ndigits=2)
 
-            bathroom["distance"] = round(
-                BathroomService.calculate_distance(
-                    lat, long, bathroom["lat"], bathroom["long"]
-                ),
-                ndigits=2,
+            bathroom_obj, created = Bathroom.objects.get_or_create(
+                gmaps_id=gmaps_id, 
+                defaults={
+                    'name': name,
+                    'address': address,
+                    'latitude': lat,
+                    'longitude': long,
+                    'distance': distance
+                }
             )
-
-            bathrooms.append(bathroom)
+            
+            bathrooms.append(bathroom_obj)
 
         page_data["bathrooms"] = bathrooms
 
