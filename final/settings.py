@@ -161,3 +161,9 @@ CSRF_TRUSTED_ORIGINS = [
     'https://supreme-tribble-4j6wvqj676phqxxr-8000.app.github.dev',
     'http://supreme-tribble-4j6wvqj676phqxxr-8000.app.github.dev',
 ]
+
+# Session settings
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Use database-backed sessions
+SESSION_COOKIE_NAME = 'sessionid'  # Ensure this is not overwritten elsewhere
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Keep session active across browser refreshes
+SESSION_COOKIE_AGE = 3600  # Session duration in seconds (1 hour)
