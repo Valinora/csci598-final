@@ -4,46 +4,36 @@ from django.views import View
 
 from ..forms import CreateBathroomForm, ReviewForm
 from ..models.bathroom import Bathroom
+from django.http import Http404
 
 
-class CreateBathroom(LoginRequiredMixin, View):
-    login_url = "/login/"
-    template = "createbathroom.html"
-    form = CreateBathroomForm
 
-    def get(self, request):
-        return render(
-            request,
-            self.template,
-            {"bathroom_form": self.form},
-        )
+class BathroomDetail(View):
+    template = "bathroom_detail.html"
 
-    def post(self, request):
-        form = self.form(request.POST)
-        data = {"bathroom_form": self.form}
-
-        if form.is_valid():
-            name = form.cleaned_data["name"]
-            address = form.cleaned_data["address"]
-            lat = form.cleaned_data["latitude"]
-            long = form.cleaned_data["longitude"]
-
-            new_bathroom = Bathroom.create_bathroom(name, address, lat, long)
-            return redirect(f"/bathrooms/{new_bathroom.pk}")
-
-        else:
-            data["bathroom_form"] = form # is_valid call adds validation errors for display.
-        
-        return render(request, self.template, data)
-
-
-class BathroomDetailView(View):
-    template = "bathroom.html"
-    review_form = ReviewForm
-    
-    def get(self, request, *args, **kwargs):
-        id = kwargs["bathroom_id"]
+    def get(self, request, id):
+        # Fetch the Bathroom object using its local database ID
         bathroom = get_object_or_404(Bathroom, id=id)
 
-        return render(request, self.template, {"review_form": self.review_form, "bathroom": bathroom})
+        # Render the detailed bathroom page
+        return render(request, self.template, {"bathroom": bathroom})
 
+    def post(self, request, id):
+        print("post called")
+        # Handle when the user clicks on a specific bathroom (for example, saving review or other actions)
+        bathroom = get_object_or_404(Bathroom, id=id)
+
+        # Process the data from the form (example: saving reviews or other operations)
+        if all(key in request.POST for key in ['name', 'address', 'lat', 'long']):
+            bathroom.name = request.POST.get("name")
+            bathroom.address = request.POST.get("address")
+            bathroom.latitude = request.POST.get("lat")
+            bathroom.longitude = request.POST.get("long")
+            bathroom.save()
+            
+            print("Updated Bathroom:", bathroom)
+
+            return redirect("bathroom_detail", id=id)
+        else:
+            print("Missing data in POST request!")
+            return Http404("Missing bathroom data in the request.")
