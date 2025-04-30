@@ -1,9 +1,23 @@
-.custom-card {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.star-rating {
+    direction: rtl;
+    display: inline-block;
+    cursor: pointer;
 }
 
-.custom-card:hover {
-    transform: scale(1.005);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    color: #ddd;
+    font-size: 24px;
+    padding: 0 2px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.star-rating label:hover,
+.star-rating label:hover~label,
+.star-rating input:checked~label {
+    color: #ffc107;
 }

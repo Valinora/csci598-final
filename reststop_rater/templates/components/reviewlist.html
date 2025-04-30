@@ -1,16 +1,15 @@
 {% block review_content %}
     <h2>Reviews</h2>
     {% if reviews %}
-        <ul>
+        <ul class="list-group list-group-flush">
             {% for review in reviews %}
-                <li>
+                <li class="list-group-item">
                     <strong>{{ review.user.username }}</strong> rated it {{ review.rating }}/5
                     <br />
                     "{{ review.comment }}"
                     <br />
                     <small>Posted on {{ review.created_at|date:"F j, Y" }}</small>
                 </li>
-                <hr />
             {% endfor %}
         </ul>
     {% else %}
