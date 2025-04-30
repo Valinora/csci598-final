@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reststop Rater{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static "styles.css" %}"
     {% include "includes.html" %}
     {% block extra_include %}
     {% endblock extra_include %}

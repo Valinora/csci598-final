@@ -1,12 +1,17 @@
-<li class="card">
-    <a href="/bathrooms/{{bathroom.bathroom.id}}">
-    <strong class="card-title">{{ bathroom.bathroom.name }}</strong><br />
-    <div class="card-text">
-        <p>
-            Address: {{ bathroom.bathroom.address }}<br />
-            Rating: {{ bathroom.bathroom.rating }}<br />
-            Distance: {{ bathroom.distance }} km<br />
+<a href="/bathrooms/{{bathroom.bathroom.id}}" class="card shadow rounded list-group-item list-group-item-action container-sm d-flex flex-row mb-2 align-items-stretch">
+    <div id="bathroom-details" class="">
+        <h2 class="card-title">{{ bathroom.bathroom.name }}</h2><br />
+        <div class="card-text">
+            <p>
+                Address: {{ bathroom.bathroom.address }}<br />
+                Rating: {{ bathroom.bathroom.rating }}<br />
+                Distance: {{ bathroom.distance|floatformat:2 }} km<br />
+            </p>
+            </div>
+    </div>
+    <div class="ms-auto rounded bg-primary d-flex">
+        <p class="text-center align-self-center text-white m-2">
+        More Information
         </p>
     </div>
-    </a>
-</li>
+</a>

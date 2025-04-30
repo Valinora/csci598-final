@@ -47,7 +47,7 @@ class NearbyBathrooms(View):
             lat = float(place_raw["location"]["latitude"])
             long = float(place_raw["location"]["longitude"])
             name = place_raw["displayName"]["text"]
-            distance = round(BathroomService.calculate_distance(user_lat, user_long, lat, long), ndigits=2)
+            distance = BathroomService.calculate_distance(user_lat, user_long, lat, long)
 
             bathroom_obj, created = Bathroom.objects.get_or_create(
                 gmaps_id=gmaps_id, 
@@ -64,5 +64,6 @@ class NearbyBathrooms(View):
                 'distance': distance,
             })
 
+        bathrooms.sort(key=lambda d: d['distance'])
         page_data["bathrooms"] = bathrooms
         return render(request, self.template, page_data)
