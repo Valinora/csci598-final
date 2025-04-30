@@ -1,14 +1,16 @@
 {% extends "base_generic.html" %}
 
-{% block content %}
-<h1>Bathroom Review App</h1>
+{% block title %}
+ - Nearby
+{% endblock title %}
 
-<h2>Nearby Bathrooms</h2>
-<ul>
+{% block content %}
+<h1 class="text-center">Nearby Bathrooms</h1>
+<div class="list-group">
     {% for bathroom in bathrooms %}
         {% include "components/bathroom.html" %}
     {% empty %}
     <p>No nearby bathrooms found.<p>
     {% endfor %}
-</ul>
+</div>
 {% endblock content %}
