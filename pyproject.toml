@@ -11,4 +11,6 @@ dependencies = [
     "djangorestframework-simplejwt",
     "django-cors-headers",
     "requests>=2.32.3",
+    "psycopg2-binary>=2.9.10",
+    "gunicorn>=23.0.0",
 ]

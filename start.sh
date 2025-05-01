@@ -11,5 +11,13 @@ echo "Applying database migrations..."
 uv run manage.py makemigrations
 uv run manage.py migrate
 
-echo "Starting Django server..."
-uv run manage.py runserver 0.0.0.0:8000
+echo "Collecting static files..."
+uv run manage.py collectstatic --no-input
+
+
+echo "Starting Gunicorn WSGI server..."
+uv run gunicorn final.wsgi --bind 127.0.0.1:8000 --workers 8 --threads 4 &
+
+
+echo "Starting nginx..."
+nginx -g "daemon off;"
