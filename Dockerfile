@@ -17,6 +17,6 @@ COPY --from=ghcr.io/astral-sh/uv:0.6 /uv /uvx /bin/
 
 WORKDIR /opt/srv
 
-EXPOSE 8000
+EXPOSE 80
 
 CMD [ "sh", "start.sh" ]
