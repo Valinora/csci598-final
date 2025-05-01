@@ -4,6 +4,8 @@ from django.views import View
 from ..forms import ReviewForm
 from ..models.bathroom import Bathroom
 from ..services.review import update_bathroom_rating_after_review_change
+from ..services.bathroom import update_bathroom_rating
+from ..services.gmapsapi import get_all_photo_urls
 
 class BathroomDetail(View):
     template = "bathroomdetail.html"
@@ -12,11 +14,13 @@ class BathroomDetail(View):
         bathroom = get_object_or_404(Bathroom, id=id)
         reviews = bathroom.reviews.all()
         form = ReviewForm()
+        photo_urls = get_all_photo_urls(bathroom.gmaps_id)
 
         context = {
             'bathroom': bathroom,
             'reviews': reviews,
             'form': form,
+            'photo_urls': photo_urls,
         }
 
         if not request.user.is_authenticated:
@@ -62,9 +66,79 @@ class BathroomDetail(View):
             update_bathroom_rating_after_review_change(updated_review)
             return redirect("bathroom_detail", id=id)
         
+        photo_url = bathroom.photo_url or "/static/no-image.jpg"
         reviews = bathroom.reviews.all()
         return render(request, self.template, {
             "bathroom": bathroom,
             "reviews": reviews,
             "form": form,
+            'photo_url': photo_url,
         })
+    
+class ReportView(View):
+    def post(self, request, id, response):
+        bathroom = get_object_or_404(Bathroom, id=id)
+        vote_key = f"report_vote_{id}"
+        previous_vote = request.COOKIES.get(vote_key)
+        response_obj = redirect(request.META.get("HTTP_REFERER", "/nearby/"))
+
+        if previous_vote == response:
+            if response == "yes":
+                bathroom.report_yes = max(bathroom.report_yes - 1, 0)
+            elif response == "no":
+                bathroom.report_no = max(bathroom.report_no - 1, 0)
+            bathroom.save()
+            response_obj.delete_cookie(vote_key)
+            return response_obj
+
+        if previous_vote == "yes" and response == "no":
+            bathroom.report_yes = max(bathroom.report_yes - 1, 0)
+            bathroom.report_no += 1
+        elif previous_vote == "no" and response == "yes":
+            bathroom.report_no = max(bathroom.report_no - 1, 0)
+            bathroom.report_yes += 1
+        
+        elif previous_vote is None:
+            if response == "yes":
+                bathroom.report_yes += 1
+            elif response == "no":
+                bathroom.report_no += 1
+
+        bathroom.save()
+        response_obj.set_cookie(vote_key, response, max_age=60 * 60 * 24 * 30)
+        return response_obj
+    
+class QuickRateView(View):
+    def post(self, request, id):
+        bathroom = get_object_or_404(Bathroom, id=id)
+        
+        try:
+            rating = int(request.POST.get("rating"))
+        except (TypeError, ValueError):
+            return redirect(request.META.get("HTTP_REFERER", "/"))
+
+        if rating < 1 or rating > 5:
+            return redirect(request.META.get("HTTP_REFERER", "/"))
+
+        cookie_key = f"quick_rate_{id}"
+        previous_rating = request.COOKIES.get(cookie_key)
+        response = redirect(request.META.get("HTTP_REFERER", "/"))
+
+        if str(previous_rating) == str(rating):
+            bathroom.quick_rate[str(rating)] = max(bathroom.quick_rate.get(str(rating), 0) - 1, 0)
+            bathroom.save(update_fields=["quick_rate"])
+            update_bathroom_rating(bathroom)
+            response.delete_cookie(cookie_key)
+            return response
+
+        if previous_rating:
+            bathroom.quick_rate[str(previous_rating)] = max(bathroom.quick_rate.get(str(previous_rating), 0) - 1, 0)
+
+        bathroom.quick_rate[str(rating)] = bathroom.quick_rate.get(str(rating), 0) + 1
+        bathroom.save(update_fields=["quick_rate"])
+        update_bathroom_rating(bathroom)
+        response.set_cookie(cookie_key, rating, max_age=60 * 60 * 24 * 30)
+
+        return response
+
+

@@ -5,12 +5,20 @@ from ..models.bathroom import Bathroom
 
 def update_bathroom_rating(bathroom):
     reviews = bathroom.reviews.all()
+    total_rating = 0
+    count = 0
+
     if reviews.exists():
-        avg_rating = sum([r.rating for r in reviews]) / reviews.count()
-        bathroom.rating = round(avg_rating, 2)
-    else:
-        bathroom.rating = 0.0
+        total_rating += sum(r.rating for r in reviews)
+        count += reviews.count()
+
+    for star, qty in bathroom.quick_rate.items():
+        total_rating += int(star) * qty
+        count += qty
+
+    bathroom.rating = round(total_rating / count, 2) if count > 0 else 0.0
     bathroom.save(update_fields=["rating"])
+
 
 class BathroomService:
     

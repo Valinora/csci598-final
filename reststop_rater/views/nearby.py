@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
+import os
 
 from ..services.bathroom import BathroomService
 from ..services.gmapsapi import get_nearby_facilities
@@ -49,6 +50,15 @@ class NearbyBathrooms(View):
             name = place_raw["displayName"]["text"]
             distance = BathroomService.calculate_distance(user_lat, user_long, lat, long)
 
+            photo_url = None
+            photos = place_raw.get("photos")
+            if photos and len(photos) > 0:
+                photo_ref = photos[0].get("name")
+                if photo_ref:
+                    photo_url = f"https://places.googleapis.com/v1/{photo_ref}/media?maxHeightPx=400&maxWidthPx=400&key={os.getenv('GMAPS_API_KEY')}"
+            else:
+                photo_url = "/static/no-image.jpg"
+
             bathroom_obj, created = Bathroom.objects.get_or_create(
                 gmaps_id=gmaps_id, 
                 defaults={
@@ -56,12 +66,22 @@ class NearbyBathrooms(View):
                     'address': address,
                     'latitude': lat,
                     'longitude': long,
+                    'photo_url': photo_url,
                 }
             )
+            if not created and (not bathroom_obj.photo_url and photo_url):
+                bathroom_obj.photo_url = photo_url
+                bathroom_obj.save()
+
+            cookie_key = f"quick_rate_{bathroom_obj.id}"
+            user_quick_rating = request.COOKIES.get(cookie_key)
             
             bathrooms.append({
                 'bathroom': bathroom_obj,
                 'distance': distance,
+                'photo_url': photo_url,
+                'user_quick_rating': user_quick_rating,
+                'average_rating': bathroom_obj.rating,
             })
 
         bathrooms.sort(key=lambda d: d['distance'])
