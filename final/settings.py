@@ -165,6 +165,5 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     'https://localhost:8000',
     'http://localhost:8000',
-    'https://supreme-tribble-4j6wvqj676phqxxr-8000.app.github.dev',
-    'http://supreme-tribble-4j6wvqj676phqxxr-8000.app.github.dev',
+    'https://reststoprater.valmagus.com'
 ]
