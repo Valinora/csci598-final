@@ -1,0 +1,17 @@
+.bathroom-photo {
+    height: calc(100% - 1rem);
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 0.5rem;
+    margin: 0.5rem 0.75rem 0.5rem 0.25rem;
+    box-sizing: border-box;
+}
+
+.fa-star {
+    color: #ccc;
+    opacity: 0.4;
+}
+  
+  
+  

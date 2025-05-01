@@ -11,7 +11,7 @@ class Bathroom(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     gmaps_id = models.CharField(max_length=50, null=True, unique=True)
-    photo_url = models.URLField(null=True, blank=True)
+    photo_url = models.URLField(null=True, blank=True, max_length=1000)
     report_no = models.IntegerField(default=0)
     report_yes = models.IntegerField(default=0)
     quick_rate = models.JSONField(default=dict) 

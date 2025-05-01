@@ -1,5 +1,6 @@
 # /backend/final/settings.py
 
+import os
 from pathlib import Path
 from corsheaders.defaults import default_headers
 
@@ -73,8 +74,12 @@ WSGI_APPLICATION = 'final.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'reststopraterdb',
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': '34.83.180.169',
+        'PORT': 5432
     }
 }
 
@@ -107,16 +112,18 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
+# USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/assets/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 
 
 # Default primary key field type
