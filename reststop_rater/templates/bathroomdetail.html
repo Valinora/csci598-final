@@ -1,17 +1,40 @@
 {% extends "base_generic.html" %}
+{% load static %}
 
 {% block content %}
-    <h1>Bathroom Details</h1>
-
-    <div class="bathroom-details">
-        <h2>{{ bathroom.name }}</h2>
-        <p><strong>Address:</strong> {{ bathroom.address }}</p>
-        <p><strong>Latitude:</strong> {{ bathroom.latitude }}</p>
-        <p><strong>Longitude:</strong> {{ bathroom.longitude }}</p>
+<div class="bathroom-details">
+    <h2>{{ bathroom.name }}</h2>
+    <p class="mb-1">
+        <span id="address-text">{{ bathroom.address }}</span>
+        <button type="button"
+            class="btn btn-outline-secondary btn-sm ms-2"
+            onclick="copyAddressDetail(event)">
+        </button>
+        <span id="copied-msg" class="text-success ms-2" style="display: none;">Copied!</span>
+    </p>
+    {% if photo_urls %}
+    <div id="photoCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+        <div class="carousel-inner">
+        {% for url in photo_urls %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <img src="{{ url }}" class="d-block w-100 rounded" style="max-height: 400px; object-fit: cover;" alt="Bathroom photo">
+            </div>
+        {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#photoCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#photoCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
     </div>
+    {% endif %}
+</div>
 
-    {% include "components/reviewlist.html" %}
-    <hr />
-    {% include "components/reviewform.html" %}
+{% include "components/reviewlist.html" %}
+{% include "components/reviewform.html" %}
 
 {% endblock content %}
+{% block scripts %}
+  <script src="{% static 'copy.js' %}"></script>
+{% endblock scripts %}

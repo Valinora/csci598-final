@@ -1,4 +1,5 @@
 {% extends "base_generic.html" %}
+{% load static %}
 
 {% block title %}
  - Nearby
@@ -14,3 +15,7 @@
     {% endfor %}
 </div>
 {% endblock content %}
+
+{% block scripts %}
+  <script src="{% static 'rating.js' %}"></script>
+{% endblock scripts %}
