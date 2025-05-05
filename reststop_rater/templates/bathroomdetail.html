@@ -1,21 +1,25 @@
 {% extends "base_generic.html" %}
 {% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+
 
 {% block content %}
 <div class="bathroom-details">
     <div class="d-flex flex-wrap justify-content-between align-items-start mb-3 w-100">
     <div>
-    <h2 class="d-flex align-items-center flex-wrap mb-1">
-      {{ bathroom.name }}
-      {% if bathroom.report_no > bathroom.report_yes %}
-        <span class="ms-2 text-danger" style="font-size: 1.25rem;" title="no_bathroom">🚩</span>
-      {% endif %}
-      <div class="d-flex align-items-center ms-3 static-star-rating" data-average="{{ bathroom.rating }}">
-      {% for _ in "12345" %}
-        <i class="fa-regular fa-star" style="font-size: 1.5rem;"></i>
-      {% endfor %}
-      </div>
-    </h2>
+      <h2 class="d-flex align-items-center flex-wrap mb-1">
+        <span class="me-2">{{ bathroom.name }}</span>
+      
+        {% if bathroom.report_no > bathroom.report_yes %}
+          <span class="ms-2 text-danger" style="font-size: 1.25rem;" title="no_bathroom">🚩</span>
+        {% endif %}
+      
+        <div class="ms-3 static-star-rating d-flex align-items-center" data-average="{{ bathroom.rating }}">
+          {% for i in "12345" %}
+            <i class="fa-solid fa-star text-warning" style="font-size: 1.5rem; opacity: 0.25;"></i>
+          {% endfor %}
+        </div>
+      </h2>                 
       
     {% if bathroom.report_no > bathroom.report_yes %}
       <div class="text-danger small fw-semibold mt-1">

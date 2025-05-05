@@ -1,4 +1,7 @@
 {% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+<link rel="stylesheet" href="{% static 'review.css' %}">
+
 
 {% block review_content %}
 <div class="w-100 mt-4">
@@ -10,27 +13,27 @@
       <li class="list-group-item">
 
         <div class="d-flex align-items-center mb-1">
-        <strong class="me-2">{{ review.user.username }}</strong>
-        <div class="static-star-rating" data-average="{{ review.rating }}">
-        {% for i in "12345" %}
-          {% if forloop.counter <= review.rating|floatformat:0 %}
-            <i class="fa-solid fa-star text-warning" style="font-size: 0.7rem;"></i>
-          {% else %}
-            <i class="fa-regular fa-star text-muted" style="font-size: 0.7rem;"></i>
-          {% endif %}
-        {% endfor %}
+          <strong class="me-2">{{ review.user.username }}</strong>
+          <div class="d-flex align-items-center ms-2 static-star-rating" data-average="{{ review.rating }}">
+            {% for _ in "12345" %}
+              <i class="fa-solid fa-star text-warning" style="font-size: 0.9rem;"></i>
+            {% endfor %}
+          </div>                    
         </div>
-        </div>
-
+               
         <p class="mb-1">"{{ review.comment }}"</p>
         <small class="text-muted">Posted on {{ review.created_at|date:"F j, Y" }}</small>
         <hr />
       </li>
     {% endfor %}
-    
+
   </ul>
   {% else %}
     <p class="text-muted fst-italic">No reviews yet. Be the first to leave one!</p>
   {% endif %}
 </div>
 {% endblock review_content %}
+
+{% block scripts %}
+  <script src="{% static 'rating.js' %}"></script>
+{% endblock scripts %}
