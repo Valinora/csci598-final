@@ -11,8 +11,8 @@
   <h1 class="m-0">Nearby Restrooms</h1>
 
   <form method="get" action="/nearby" class="d-flex align-items-center ms-auto">
-    <input type="hidden" name="lat" value="{{ request.GET.lat|default:request.COOKIES.lat }}">
-    <input type="hidden" name="long" value="{{ request.GET.long|default:request.COOKIES.long }}">
+    <input type="hidden" name="lat" value="{{ lat }}">
+  <input type="hidden" name="long" value="{{ long }}">
 
     <label for="radius" class="form-label me-2 mb-0">Radius (miles):</label>
     <input

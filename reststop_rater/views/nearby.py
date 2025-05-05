@@ -21,27 +21,31 @@ class NearbyBathrooms(View):
 
     def get(self, request):
         page_data = {"bathrooms": []}
-        user_lat, user_long = None, None
+        lat_raw = request.GET.get("lat") or request.COOKIES.get("lat")
+        long_raw = request.GET.get("long") or request.COOKIES.get("long")
 
         try:
-            user_lat = float(request.GET.get("lat"))
-            user_long = float(request.GET.get("long"))
+            user_lat = float(lat_raw)
+            user_long = float(long_raw)
         except (ValueError, TypeError):
-            user_lat, user_long = get_location_from_cookies(request)
-            if not user_lat or not user_long:
-                return render(request, self.template, page_data)
+            return render(request, self.template, page_data)
+
+        page_data["lat"] = user_lat
+        page_data["long"] = user_long
 
         try:
             miles = float(request.GET.get("radius", 10))
             radius = int(miles * 1609.34)
         except (ValueError, TypeError):
             radius = 10000
+        page_data["radius"] = radius
 
         try:
             places_raw = get_nearby_facilities(user_lat, user_long, radius=radius)
         except Exception as e:
             print(f"Error fetching nearby places: {e}")
-            return render(request, self.template, page_data)
+            response = render(request, self.template, page_data)
+            return set_location_cookie(response, user_lat, user_long)
 
         bathrooms = []
         for place_raw in places_raw.get("places", []):
@@ -93,4 +97,5 @@ class NearbyBathrooms(View):
 
         bathrooms.sort(key=lambda b: b['distance'])
         page_data["bathrooms"] = bathrooms
-        return render(request, self.template, page_data)
+        response = render(request, self.template, page_data)
+        return set_location_cookie(response, user_lat, user_long)
