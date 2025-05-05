@@ -1,5 +1,3 @@
-# /backend/reststop_rater/services/bathroom.py
-
 from math import radians, sin, cos, sqrt, atan2
 from ..models.bathroom import Bathroom
 
@@ -24,10 +22,11 @@ class BathroomService:
     
     @staticmethod
     def calculate_distance(lat1, lon1, lat2, lon2):
-        print(f"User Latitude: {lat1}, User Longitude: {lon1}")
-        print(f"Bathroom Latitude: {lat2}, Bathroom Longitude: {lon2}")
-
-        R = 6371
+        lat1 = float(lat1)
+        lon1 = float(lon1)
+        lat2 = float(lat2)
+        lon2 = float(lon2)
+        R = 3958.8
         dlat = radians(lat2 - lat1)
         dlon = radians(lon2 - lon1)
         a = sin(dlat / 2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2)**2

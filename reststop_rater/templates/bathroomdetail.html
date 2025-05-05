@@ -3,32 +3,63 @@
 
 {% block content %}
 <div class="bathroom-details">
-    <h2>{{ bathroom.name }}</h2>
-    <p class="mb-1">
-        <span id="address-text">{{ bathroom.address }}</span>
-        <button type="button"
-            class="btn btn-outline-secondary btn-sm ms-2"
-            onclick="copyAddressDetail(event)">
-        </button>
-        <span id="copied-msg" class="text-success ms-2" style="display: none;">Copied!</span>
-    </p>
-    {% if photo_urls %}
-    <div id="photoCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
-        <div class="carousel-inner">
-        {% for url in photo_urls %}
-            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-            <img src="{{ url }}" class="d-block w-100 rounded" style="max-height: 400px; object-fit: cover;" alt="Bathroom photo">
-            </div>
-        {% endfor %}
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#photoCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#photoCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </button>
-    </div>
+    <div class="d-flex flex-wrap justify-content-between align-items-start mb-3 w-100">
+    <div>
+    <h2 class="d-flex align-items-center flex-wrap mb-1">
+      {{ bathroom.name }}
+      {% if bathroom.report_no > bathroom.report_yes %}
+        <span class="ms-2 text-danger" style="font-size: 1.25rem;" title="no_bathroom">🚩</span>
+      {% endif %}
+      <div class="d-flex align-items-center ms-3 static-star-rating" data-average="{{ bathroom.rating }}">
+      {% for _ in "12345" %}
+        <i class="fa-regular fa-star" style="font-size: 1.5rem;"></i>
+      {% endfor %}
+      </div>
+    </h2>
+      
+    {% if bathroom.report_no > bathroom.report_yes %}
+      <div class="text-danger small fw-semibold mt-1">
+        Users have reported no bathroom here
+       </div>
     {% endif %}
+    
+    <p class="mb-3 mt-2">
+      <span id="address-text" class="fs-5">{{ bathroom.address }}</span>
+      <button type="button"
+        class="btn btn-outline-secondary p-0 d-inline-flex align-items-center justify-content-center ms-2"
+        style="width: 1.5rem; height: 1.5rem;"
+        onclick="copyAddressDetail(event)">
+        <i class="bi bi-clipboard" style="font-size: 0.6rem;"></i>
+      </button>
+      <span id="copied-msg" class="text-success ms-2" style="display: none;">Copied!</span>
+    </p>
+    </div>
+    <div>
+      {% include "components/reportbuttons.html" %}
+    </div>
+    </div>
+    <div class="mb-2"></div>
+    {% if photo_urls %}
+      <div id="photoCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+      <div class="carousel-inner">
+      {% for url in photo_urls %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <img src="{{ url }}" class="d-block w-100 rounded" style="max-height: 400px; object-fit: cover;" alt="Bathroom photo">
+        </div>
+      {% endfor %}
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#photoCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#photoCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+      </div>
+    {% else %}
+      <p class="text-muted fst-italic">No photos yet.</p>
+    {% endif %}
+
 </div>
 
 {% include "components/reviewlist.html" %}
@@ -37,4 +68,5 @@
 {% endblock content %}
 {% block scripts %}
   <script src="{% static 'copy.js' %}"></script>
+  <script src="{% static 'rating.js' %}"></script>
 {% endblock scripts %}

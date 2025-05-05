@@ -6,16 +6,39 @@
 {% endblock title %}
 
 {% block content %}
-<h1 class="text-center">Nearby Bathrooms</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="m-0">Nearby Restrooms</h1>
+
+  <form method="get" action="/nearby" class="d-flex align-items-center ms-auto">
+    <input type="hidden" name="lat" value="{{ request.GET.lat|default:request.COOKIES.lat }}">
+    <input type="hidden" name="long" value="{{ request.GET.long|default:request.COOKIES.long }}">
+
+    <label for="radius" class="form-label me-2 mb-0">Radius (miles):</label>
+    <input
+      type="number"
+      name="radius"
+      id="radius"
+      value="{{ request.GET.radius|default:10 }}"
+      step="1"
+      min="0"
+      class="form-control form-control-sm d-inline-block w-auto me-2"
+    >
+    <button type="submit" class="btn btn-sm btn-primary">Update</button>
+  </form>
+</div>
+
+<div class="mb-4"></div>
+
 <div class="list-group">
-    {% for bathroom in bathrooms %}
-        {% include "components/bathroom.html" %}
-    {% empty %}
-    <p>No nearby bathrooms found.<p>
-    {% endfor %}
+  {% for bathroom in bathrooms %}
+    {% include "components/bathroom.html" %}
+  {% empty %}
+    <p>No nearby bathrooms found.</p>
+  {% endfor %}
 </div>
 {% endblock content %}
 
 {% block scripts %}
   <script src="{% static 'rating.js' %}"></script>
+  <script src="{% static 'maps.js' %}"></script>
 {% endblock scripts %}

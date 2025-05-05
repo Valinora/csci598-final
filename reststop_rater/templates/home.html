@@ -1,16 +1,26 @@
 {% extends "base_generic.html" %}
 {% load static %}
 
-{% block content %}
-<h1>Bathroom Review App</h1>
-<p>Hello and welcome to the Reststop Rater! Please grant permission to find your location.</p>
+{% block title %}
+ - Home
+{% endblock title %}
 
-<div id="coords" style="text-align: center; margin-top: 20px;">
+{% block content %}
+
+<div class="full-screen-wrapper">
+  <div class="centered-container">
+    <p class="mb-1 fs-3">Hello and welcome to</p>
+    <h1 class="fw-bold dark-blue display-1 navbar-brand-font display-3">Reststop Rater</h1>
+    <p class="mt-4 mb-4 fs-5 text-grey">Please grant permission to find your location.</p>
+  
+  <div id="coords">
     <button id="location-btn" class="btn btn-primary" type="button" disabled="true">
-        <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        Finding location...
-      </button>
+      <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      Finding location...
+    </button>
+  </div>
+</div>
 </div>
 
-<script src="{% static "maps.js" %}"></script>
+<script src="{% static 'maps.js' %}"></script>
 {% endblock content %}

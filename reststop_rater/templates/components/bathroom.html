@@ -1,9 +1,9 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'bathroom.css' %}">
+<link rel="stylesheet" href="{% static 'style.css' %}">
 
 <a href="/bathrooms/{{ bathroom.bathroom.id }}"
    class="card shadow rounded list-group-item list-group-item-action container-sm d-flex flex-row mb-2 align-items-center"
-   style="height: 160px;">
+   style="height: 165px;">
 
   {% if bathroom.photo_url %}
     <img src="{{ bathroom.photo_url }}" alt="Bathroom Photo"
@@ -11,15 +11,16 @@
   {% endif %}
 
   <div id="bathroom-details" class="flex-grow-1">
-    <h2 class="card-title d-flex align-items-center flex-wrap">
+    <h2 class="card-title d-flex align-items-center flex-wrap mb-1">
       {{ bathroom.bathroom.name }}
 
       {% if bathroom.bathroom.report_no > bathroom.bathroom.report_yes %}
-        <span class="ms-2 text-danger" style="font-size: 1.25rem;" title="Users reported no bathroom here">🚩</span>
+        <span class="ms-2 text-danger" style="font-size: 1.25rem;" title="no_bathroom">🚩</span>
       {% endif %}
 
+  <div class="d-flex align-items-center ms-3">
     <form method="POST" action="/quickrate/{{ bathroom.bathroom.id }}/"
-      class="d-flex align-items-center ms-3 star-rating-container"
+      class="d-flex star-rating-container"
       data-average="{{ bathroom.average_rating }}"
       data-user="{{ bathroom.user_quick_rating|default:'0' }}">
       {% csrf_token %}
@@ -29,10 +30,11 @@
         value="{{ i }}"
         class="btn p-0 border-0 bg-transparent hover-star"
         style="font-size: 1.5rem;">
-        <i class="fa-regular fa-star"></i>  <!-- placeholder icon -->
+        <i class="fa-regular fa-star"></i>
       </button>
       {% endfor %}
-    </form>
+      </form>
+      </div>  
     </h2>
 
     {% if bathroom.bathroom.report_no > bathroom.bathroom.report_yes %}
@@ -41,30 +43,11 @@
 
     <div class="card-text">
       <p class="mb-0">
-        Address: {{ bathroom.bathroom.address }}<br />
-        Rating: {{ bathroom.bathroom.rating }}<br />
-        Distance: {{ bathroom.distance|floatformat:2 }} km
+        {{ bathroom.bathroom.address }}<br />
+        {{ bathroom.distance|floatformat:2 }} mi <br />
+        {{ bathroom.review_count }} review{{ bathroom.review_count|pluralize }}
       </p>
     </div>
   </div>
-
-  <div class="ms-auto d-flex flex-column align-items-end justify-content-center text-end" style="min-width: 250px;">
-    <p class="mb-1 fw-bold">Is there a bathroom here?</p>
-
-    <div class="d-flex flex-row gap-2 mb-2">
-      <form method="POST" action="/report/{{ bathroom.bathroom.id }}/yes/">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-outline-success btn-sm">Yes</button>
-      </form>
-      <form method="POST" action="/report/{{ bathroom.bathroom.id }}/no/">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-outline-danger btn-sm">No</button>
-      </form>
-    </div>
-
-    <small class="text-muted">
-      {{ bathroom.bathroom.report_yes }} user{{ bathroom.bathroom.report_yes|pluralize }} reported a bathroom here<br>
-      {{ bathroom.bathroom.report_no }} user{{ bathroom.bathroom.report_no|pluralize }} reported no bathroom here
-    </small>
-  </div>
+  {% include "components/reportbuttons.html" with bathroom=bathroom.bathroom %}
 </a>
