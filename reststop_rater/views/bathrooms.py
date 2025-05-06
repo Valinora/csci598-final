@@ -80,7 +80,7 @@ class ReportView(View):
         bathroom = get_object_or_404(Bathroom, id=id)
         vote_key = f"report_vote_{id}"
         previous_vote = request.POST.get("previous_vote") or request.COOKIES.get(vote_key)
-        response_obj = redirect("bathroom_detail", id=bathroom.id) if "bathroom_detail" in request.path else redirect("/nearby/")
+        response_obj = redirect(request.META.get("HTTP_REFERER", "/nearby/"))
 
         if previous_vote == response:
             if response == "yes":
