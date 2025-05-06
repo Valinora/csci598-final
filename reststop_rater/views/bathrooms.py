@@ -79,7 +79,7 @@ class ReportView(View):
     def post(self, request, id, response):
         bathroom = get_object_or_404(Bathroom, id=id)
         vote_key = f"report_vote_{id}"
-        previous_vote = request.COOKIES.get(vote_key)
+        previous_vote = request.POST.get("previous_vote") or request.COOKIES.get(vote_key)
         response_obj = redirect(request.META.get("HTTP_REFERER", "/nearby/"))
 
         if previous_vote == response:

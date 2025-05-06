@@ -1,25 +1,34 @@
-<nav class="navbar navbar-expand bg-dark">
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a href="/" class="nav-link text-light">Find Bathrooms</a>
-            </li>
-            {% if request.COOKIES.lat and request.COOKIES.long %}
-            <li class="nav-item mr-auto">
-                <a class="nav-link text-light" href="/nearby/?lat={{ request.COOKIES.lat|urlencode }}&long={{ request.COOKIES.long|urlencode }}&next={{ request.get_full_path|urlencode }}">Nearby Bathrooms</a>
-            </li>
-            {% endif %}
-        </ul>
-        <ul class="navbar-nav ms-auto">
-            {% if user.is_authenticated %}
-            <li class="nav-item mr-auto">
-                <a class="nav-link text-light" href="/logout/?next={{ request.get_full_path|urlencode }}">Logout ({{user.username}})</a>
-            </li>
-            {% else %}
-            <li class="nav-item mr-auto">
-                <a class="nav-link text-light" href="/login/?next={{ request.get_full_path|urlencode }}">Login</a>
-            </li>
-            {% endif %}
-        </ul>
+<nav class="navbar navbar-expand bg-dark position-relative">
+  <div class="navbar-inner-padding w-100">
+  <div class="collapse navbar-collapse justify-content-between align-items-center">
+
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a href="/" class="nav-link text-light">Find Restrooms</a>
+      </li>
+      {% if request.COOKIES.lat and request.COOKIES.long %}
+      <li class="nav-item">
+        <a class="nav-link text-light" href="/nearby/?lat={{ request.COOKIES.lat|urlencode }}&long={{ request.COOKIES.long|urlencode }}">Nearby Restrooms</a>
+      </li>
+      {% endif %}
+    </ul>
+
+    <div class="position-absolute start-50 translate-middle-x">
+      <span class="navbar-brand text-light fw-bold">Reststop Rater</span>
     </div>
+
+    <ul class="navbar-nav ms-auto">
+      {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link text-light" href="/logout/?next={{ request.get_full_path|urlencode }}">Logout ({{user.username}})</a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link text-light" href="/login/?next={{ request.get_full_path|urlencode }}">Login</a>
+      </li>
+      {% endif %}
+    </ul>
+
+  </div>
+  </div>
 </nav>

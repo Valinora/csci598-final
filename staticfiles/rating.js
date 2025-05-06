@@ -1,3 +1,4 @@
+// Allows user to submit a quick rating without login
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".star-rating-container").forEach(container => {
         const avg = parseFloat(container.dataset.average);
@@ -33,3 +34,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
   
+function renderStaticStars() {
+  document.querySelectorAll(".static-star-rating").forEach(container => {
+    const avg = parseFloat(container.dataset.average || 0);
+    const stars = container.querySelectorAll("i");
+
+    stars.forEach((star, index) => {
+      const starNum = index + 1;
+      star.className = "fa-solid fa-star text-warning";
+
+      if (avg >= starNum) {
+        star.style.opacity = 0.95;
+      } else if (avg >= starNum - 0.5) {
+        star.style.opacity = 0.6;
+      } else {
+        star.style.opacity = 0.25;
+      }
+    });
+  });
+}
+document.addEventListener("DOMContentLoaded", renderStaticStars);

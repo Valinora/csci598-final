@@ -1,12 +1,12 @@
 {% load django_bootstrap5 %}
-
 {% block review_form_content %}
+<div class="pb-5">  {# Add padding-bottom here #}
     {% if user.is_authenticated %}
         <h2>Leave a Review</h2>
-            <form method="POST">
-                <div class="d-flex flex-column">
+        <form method="POST">
+            <div class="d-flex flex-column">
                 {% csrf_token %}
-                <div class="star-rating animated-stars align-self-center">
+                <div class="star-rating animated-stars align-self-center mb-3">
                     <input type="radio" id="star5" name="rating" value="5">
                     <label class="bi bi-star-fill" for="star5"></label>
                     <input type="radio" id="star4" name="rating" value="4">
@@ -20,8 +20,8 @@
                 </div>
                 {% bootstrap_form form exclude='rating' %}
                 <button type="submit" class="btn btn-primary btn-lg">Submit Review</button>
-                </div>
-            </form>
+            </div>
+        </form>
     {% else %}
         <p>
             <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary">Login to leave a review</a>
@@ -31,4 +31,5 @@
             </small>
         </p>
     {% endif %}
+</div>
 {% endblock review_form_content %}

@@ -1,3 +1,4 @@
+// Allows user to copy the address of a bathroom on the detail page
 function copyAddressDetail(event) {
     event.stopPropagation();
     const text = document.getElementById("address-text").innerText;

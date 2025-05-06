@@ -1,0 +1,21 @@
+<div class="ms-auto d-flex flex-column align-items-end align-self-start text-end" style="min-width: 250px;">
+  <p class="mb-1 mt-3 fw-bold">Is there a bathroom here?</p>
+  
+  <div class="d-flex flex-row gap-2 mb-2">
+    <form method="POST" action="/report/{{ bathroom.id }}/yes/?next={{ request.get_full_path|urlencode }}">
+      {% csrf_token %}
+    <button type="submit" class="btn btn-sm text-success d-flex align-items-center gap-1"
+      style="background-color: rgba(25, 135, 84, 0.1);">
+      <i class="bi bi-hand-thumbs-up-fill"></i> {{ bathroom.report_yes }}
+    </button>
+    </form>
+    <form method="POST" action="/report/{{ bathroom.id }}/no/?next={{ request.get_full_path|urlencode }}">
+      {% csrf_token %}
+    <button type="submit" class="btn btn-sm text-danger d-flex align-items-center gap-1"
+      style="background-color: rgba(220, 53, 69, 0.1);">
+      <i class="bi bi-hand-thumbs-down-fill"></i> {{ bathroom.report_no }}
+    </button>
+    </form>
+  </div>
+ </div>
+  
