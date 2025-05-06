@@ -14,6 +14,8 @@ function findLocation() {
                 button.innerText = "Find Nearby Bathrooms";
 
                 button.addEventListener("click", () => {
+                    document.cookie = `lat=${latitude}; path=/; max-age=${60 * 60 * 24 * 365}`;
+                    document.cookie = `long=${longitude}; path=/; max-age=${60 * 60 * 24 * 365}`;
                     window.location.href = `/nearby?lat=${encodeURIComponent(latitude)}&long=${encodeURIComponent(longitude)}`;
                 });
             },
